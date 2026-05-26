@@ -11,3 +11,105 @@ generator client {
 datasource db {
   provider = "mysql"
 }
+
+// 1. MÓDULO DE USUARIOS (Administración base y Clientes)
+model User {
+  id        Int   @id @default(autoincrement())
+  nombre      String   @db.VarChar(120)
+  apellido  String   @db.VarChar(120)
+  email     String   @unique @db.VarChar(150)
+  password  String   @db.VarChar(255)
+  telefono     String?
+  role      Role     @default(USER) 
+  isActive  Boolean  @default(true)   
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  // Relaciones
+
+  //Nombre
+  @@map("usuario")
+}
+
+//2. Enum con roles para usuario
+enum Role {
+  ADMIN
+  USER
+}
+
+// 3. MÓDULO DE CATEGORÍAS
+model Category {
+  id          Int   @id @default(autoincrement())
+  nombre      String   @unique @db.VarChar(100)
+  descripcion String?   @db.VarChar(500)
+  isActive    Boolean  @default(true) 
+  createdAt   DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  // Relaciones
+  
+}
+
+// 4. MÓDULO DE ESPECIALIDADES
+model Specialty {
+  id          Int   @id @default(autoincrement())
+  nombre      String   @db.VarChar(100)
+  descripcion String?   @db.VarChar(500)
+  isActive    Boolean  @default(true)
+  precioBase Decimal @default(500)
+  createdAt   DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  // Relaciones 
+}
+
+// 5. MÓDULO DE PROFESIONALES
+model Professional {
+  id          Int   @id @default(autoincrement())
+  nombre      String   @db.VarChar(120)
+  apellido  String   @db.VarChar(120)
+  email     String   @unique @db.VarChar(150)
+  telefono     String?
+  titulo    String   @db.VarChar(120)
+  descripcion   String?   @db.VarChar(500)
+  expAnnos Int      
+  modalidad      Modality @default(PRESENCIAL)
+  ubicacion      String    @db.VarChar(500)
+  tarifaBase    Decimal    @default(1000)
+  isAvailable   Boolean  @default(true)
+  isActive    Boolean  @default(true)
+  foto    String?    @default("image-not-found.jpg") @db.VarChar(255)
+  createdAt     DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  // Relaciones
+  
+}
+
+// 6. Enum modalidades
+enum Modality {
+  VIRTUAL
+  PRESENCIAL
+  MIXTA
+}
+
+// 7. MÓDULO BASE DE CITAS 
+model Appointment {
+  id             Int            @id @default(autoincrement())
+  fecha           DateTime    
+  hora           String          
+  modalidad       Modality
+  descripcion    String?   @db.VarChar(500)
+  status         AppointmentStatus @default(PENDING)
+  createdAt      DateTime          @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  // Relaciones
+}
+
+// 8. Enum status 
+enum AppointmentStatus {
+  PENDING
+  BOOKED
+  CANCELLED
+}
