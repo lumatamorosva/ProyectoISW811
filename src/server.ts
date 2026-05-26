@@ -21,7 +21,7 @@ app.use(
 );
 app.get("/", (req, res) => {
     res.json({
-        message: "API de videojuegos funcionando correctamente",
+        message: "API de Habitatt funcionando correctamente",
     });
 });
 //---- Definir rutas ----
