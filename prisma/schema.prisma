@@ -26,7 +26,7 @@ model User {
   updatedAt DateTime @default(now()) @updatedAt
 
   // Relaciones
-
+  citas Appointment[] // Citas donde este usuario es el cliente
   //Nombre
   @@map("usuario")
 }
@@ -47,7 +47,7 @@ model Category {
   updatedAt DateTime @default(now()) @updatedAt
 
   // Relaciones
-  
+  servicios    Service[]
 }
 
 // 4. MÓDULO DE ESPECIALIDADES
@@ -61,6 +61,8 @@ model Specialty {
   updatedAt DateTime @default(now()) @updatedAt
 
   // Relaciones 
+  profesionales Professional[]
+  servicios      Service[]
 }
 
 // 5. MÓDULO DE PROFESIONALES
@@ -83,7 +85,9 @@ model Professional {
   updatedAt DateTime @default(now()) @updatedAt
 
   // Relaciones
-  
+  especialidades   Specialty[]    // Relación muchos a muchos
+  servicios      Service[]      // Servicios que ofrece este profesional
+  citas  Appointment[]  // Citas agendadas con este profesional
 }
 
 // 6. Enum modalidades
@@ -105,6 +109,12 @@ model Appointment {
   updatedAt DateTime @default(now()) @updatedAt
 
   // Relaciones
+  clienteId       Int
+  cliente         User              @relation(fields: [clienteId], references: [id])
+  profesionalId Int
+  profesional   Professional      @relation(fields: [profesionalId], references: [id])
+  servicioId      Int
+  servicio        Service           @relation(fields: [servicioId], references: [id])
 }
 
 // 8. Enum status 
@@ -112,4 +122,25 @@ enum AppointmentStatus {
   PENDING
   BOOKED
   CANCELLED
+}
+
+//9. Modulo SERVICIOS
+model Service {
+  id            Int   @id @default(autoincrement())
+  nombre          String  @db.VarChar(120)
+  descripcion   String?   @db.VarChar(500)
+  precio         Decimal @default(0)
+  duracionMinutoss  Int @default(0)
+  modality      Modality
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  // Relaciones
+  profesionalId Int
+  profesional   Professional @relation(fields: [profesionalId], references: [id])
+  categoriaId     Int
+  categoria       Category     @relation(fields: [categoriaId], references: [id])
+  especialdades    Specialty[]  // Especialidades asociadas al servicio
+  citas   Appointment[]
 }
