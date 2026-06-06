@@ -62,7 +62,6 @@ model Specialty {
 
   // Relaciones 
   profesionales Professional[]
-  servicios      Service[]
 }
 
 // 5. MÓDULO DE PROFESIONALES
@@ -113,8 +112,6 @@ model Appointment {
   cliente         User              @relation(fields: [clienteId], references: [id])
   profesionalId Int
   profesional   Professional      @relation(fields: [profesionalId], references: [id])
-  servicioId      Int
-  servicio        Service           @relation(fields: [servicioId], references: [id])
 }
 
 // 8. Enum status 
@@ -141,6 +138,4 @@ model Service {
   profesional   Professional @relation(fields: [profesionalId], references: [id])
   categoriaId     Int
   categoria       Category     @relation(fields: [categoriaId], references: [id])
-  especialdades    Specialty[]  // Especialidades asociadas al servicio
-  citas   Appointment[]
 }
