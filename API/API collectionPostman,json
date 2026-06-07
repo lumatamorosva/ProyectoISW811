@@ -1,0 +1,32 @@
+{
+  "info": {
+    "name": "Usuarios API",
+    "_postman_id": "123456",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Listar Usuarios",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/usuarios",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["usuarios"]
+        }
+      }
+    },{
+      "name": "Obtener Usuario",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/usuarios/1",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["usuarios","1"]
+        }
+      }  
+    }
+  ]
+}
