@@ -11,22 +11,85 @@
         "method": "GET",
         "url": {
           "raw": "http://localhost:3000/usuarios",
-          "host": ["localhost"],
+          "host": [
+            "localhost"
+          ],
           "port": "3000",
-          "path": ["usuarios"]
+          "path": [
+            "usuarios"
+          ]
         }
       }
-    },{
+    },
+    {
       "name": "Obtener Usuario",
       "request": {
         "method": "GET",
         "url": {
           "raw": "http://localhost:3000/usuarios/1",
-          "host": ["localhost"],
+          "host": [
+            "localhost"
+          ],
           "port": "3000",
-          "path": ["usuarios","1"]
+          "path": [
+            "usuarios",
+            "1"
+          ]
         }
-      }  
+      }
+    },
+    {
+      "name": "Crear usuario",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nombre\": \"nuevo\",\r\n  \"apellido\": \"Apellido\",\r\n  \"email\": \"nuevo@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"isActive\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/usuarios",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "usuarios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Actualizar usuario",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nombre\": \"Usuario creado\",\r\n  \"apellido\": \"Con Apellido\",\r\n  \"email\": \"nuevo@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"isActive\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/usuarios/9",
+          "host": [ "localhost"],
+          "port": "3000",
+          "path": ["usuarios","9"]
+        }
+      },
+      "response": []
     }
   ]
 }

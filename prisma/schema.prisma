@@ -15,11 +15,11 @@ datasource db {
 // 1. MÓDULO DE USUARIOS (Administración base y Clientes)
 model User {
   id        Int   @id @default(autoincrement())
-  nombre      String   @db.VarChar(120)
+  nombre    String   @db.VarChar(120)
   apellido  String   @db.VarChar(120)
   email     String   @unique @db.VarChar(150)
   password  String   @db.VarChar(255)
-  telefono     String?
+  telefono  String?
   role      Role     @default(USER) 
   isActive  Boolean  @default(true)   
   createdAt DateTime @default(now())
