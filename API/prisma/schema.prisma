@@ -20,6 +20,7 @@ model User {
   email     String   @unique @db.VarChar(150)
   password  String   @db.VarChar(255)
   telefono  String?
+  foto    String?    @default("image-not-found.jpg") @db.VarChar(255)
   role      Role     @default(USER) 
   isActive  Boolean  @default(true)   
   createdAt DateTime @default(now())

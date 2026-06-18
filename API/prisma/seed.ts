@@ -28,14 +28,14 @@ async function main() {
     //Categorias
     await prisma.user.createMany({
         data: [
-            { email: "admin@habitatt.com", nombre: "Admin", apellido: "Admin", password: "123456", role: Role.ADMIN },
-            { email: "loona@gmail.com", nombre: "Loona", apellido: "Wolf", password: "123456", role: Role.USER },
-            { email: "balto@gmail.com", nombre: "Balto", apellido: "Kaltag", password: "123456", role: Role.USER },
-            { email: "dominic@gmail.com", nombre: "Dominc", apellido: "Toretto", password: "123456", role: Role.USER },
-            { email: "james@gmail.com", nombre: "James", apellido: "Bond", password: "123456", role: Role.USER },
-            { email: "jonh@gmail.com", nombre: "Jonh", apellido: "McClane", password: "123456", role: Role.USER },
-            { email: "indi@gmail.com", nombre: "Indiana", apellido: "Jones", password: "123456", role: Role.USER },
-            { email: "albertw@gmail.com", nombre: "Albert", apellido: "Wesker", password: "123456", role: Role.USER },
+            { email: "admin@habitatt.com", nombre: "Admin", apellido: "Admin", password: "123456", foto: "admin.jpg",role: Role.ADMIN },
+            { email: "loona@gmail.com", nombre: "Loona", apellido: "Wolf", password: "123456", foto: "loona.jpg", role: Role.USER },
+            { email: "balto@gmail.com", nombre: "Balto", apellido: "Kaltag", password: "123456", foto: "balto.jpg", role: Role.USER },
+            { email: "dominic@gmail.com", nombre: "Dominc", apellido: "Toretto", password: "123456", foto: "dominic.jpg", role: Role.USER },
+            { email: "james@gmail.com", nombre: "James", apellido: "Bond", password: "123456", foto: "james.jpg", role: Role.USER },
+            { email: "jonh@gmail.com", nombre: "Jonh", apellido: "McClane", password: "123456", foto: "jonh.jpg", role: Role.USER },
+            { email: "indi@gmail.com", nombre: "Indiana", apellido: "Jones", password: "123456", foto: "indinana.jpg", role: Role.USER },
+            { email: "albertw@gmail.com", nombre: "Albert", apellido: "Wesker", password: "123456", foto: "albert.jpg", role: Role.USER },
         ],
     })
     await prisma.category.createMany({
@@ -93,7 +93,7 @@ async function main() {
     })
     await prisma.professional.create({
         data:{
-            nombre: "Anakyn", apellido: "Skywalker", email: "anakyn1@vanguardia.com", titulo: "Arquitecto", expAnnos: 8, ubicacion: "Central",
+            nombre: "Anakyn", apellido: "Skywalker", email: "anakyn1@vanguardia.com", titulo: "Arquitecto", expAnnos: 8, ubicacion: "Central", foto: "anakyn.jpg",
         //Relaciones
         especialidades: {
             connect:[{id: spcMap["Modelado y Visualización 3D"]},{id: spcMap["Diseño de Vivienda Unifamiliar"]}]
@@ -102,8 +102,7 @@ async function main() {
     })
     await prisma.professional.create({
         data:{
-            nombre: "Dulcinea", apellido: "Spots", email: "tramites@expedia.com", titulo: "Ejecutiva en Gestión Administrativa", expAnnos: 5, ubicacion: "Central",
-        //Relaciones
+            nombre: "Dulcinea", apellido: "Spots", email: "tramites@expedia.com", titulo: "Ejecutiva en Gestión Administrativa", expAnnos: 5, ubicacion: "Central", foto: "dulcinea.jpg",
         especialidades: {
             connect:[{id: spcMap["Coordinación de Trámites Institucionales"]},{id: spcMap["Gestión Documental"]}]
         },
@@ -111,7 +110,7 @@ async function main() {
     })
     await prisma.professional.create({
         data:{
-            nombre: "Jill", apellido: "Valentine", email: "jvrcing@ingenieriaespecial.com", titulo: "Ingeniera Estructural", expAnnos: 2, ubicacion: "Central",
+            nombre: "Jill", apellido: "Valentine", email: "jvrcing@ingenieriaespecial.com", titulo: "Ingeniera Estructural", expAnnos: 2, ubicacion: "Central", foto: "jill.jpg",
         //Relaciones
         especialidades: {
             connect:[{id: spcMap["Diseño Estructural"]},{id: spcMap["Evaluación y Diagnóstico de Estructuras"]}]
@@ -120,7 +119,7 @@ async function main() {
     })
     await prisma.professional.create({
         data:{
-            nombre: "Allan", apellido: "Grant", email: "allangjp@ingenieriaespecial.com", titulo: "Ingeniero Civil", expAnnos: 2, ubicacion: "Central",
+            nombre: "Allan", apellido: "Grant", email: "allangjp@ingenieriaespecial.com", titulo: "Ingeniero Civil", expAnnos: 2, ubicacion: "Central", foto: "allan.jpg",
             isAvailable: false,
         //Relaciones
         especialidades: {

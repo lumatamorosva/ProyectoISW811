@@ -175,6 +175,24 @@
       },
       "response": []
     }]
-    }
+    },
+    {"name": "imagen",
+  "item":[
+    {"name": "Mostrar imagenes",
+  "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/images/loona.jpg",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "images",
+            "loona.jpg"
+          ]
+        }
+      }}
+  ]}
   ]
 }

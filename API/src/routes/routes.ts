@@ -5,6 +5,7 @@ import { CategoriaRoutes } from './categoria.route';
 import { EspecialidadRoutes } from './especialidad.route';
 import { CitaRoutes } from './cita.route';
 import { ServicioRoutes } from './servicio.route';
+import { ImageRoutes } from './image.routes';
 export class AppRoutes {
     static get routes(): Router {
         const router = Router();
@@ -14,7 +15,8 @@ export class AppRoutes {
         router.use('/categorias', CategoriaRoutes.routes),
         router.use('/especialidades', EspecialidadRoutes.routes),
         router.use('/citas', CitaRoutes.routes),
-        router.use('/servicios', ServicioRoutes.routes)
+        router.use('/servicios', ServicioRoutes.routes),
+        router.use('/imagenes', ImageRoutes.routes)
         return router;
     }
 }
