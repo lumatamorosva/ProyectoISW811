@@ -1,6 +1,6 @@
 
 import { connect } from "node:http2";
-import { Modality, Role } from "../API/generated/prisma/enums";
+import { Modality, Role } from "../generated/prisma/enums";
 import { prisma } from "../src/config/prisma";
 async function main() {
     console.log("Iniciando seed...");

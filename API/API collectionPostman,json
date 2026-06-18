@@ -1,12 +1,13 @@
 {
   "info": {
-    "name": "Usuarios API",
+    "name": "Habitatt API",
     "_postman_id": "123456",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
-    {
-      "name": "Listar Usuarios",
+    {"name": "usuario",
+      "item": [
+        {"name": "Listar Usuarios",
       "request": {
         "method": "GET",
         "url": {
@@ -21,8 +22,7 @@
         }
       }
     },
-    {
-      "name": "Obtener Usuario",
+    {"name": "Obtener Usuario",
       "request": {
         "method": "GET",
         "url": {
@@ -38,8 +38,7 @@
         }
       }
     },
-    {
-      "name": "Crear usuario",
+    {"name": "Crear usuario",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -68,8 +67,7 @@
       },
       "response": []
     },
-    {
-      "name": "Actualizar usuario",
+    {"name": "Actualizar usuario",
       "request": {
         "method": "PUT",
         "header": [],
@@ -90,6 +88,93 @@
         }
       },
       "response": []
+    }
+      ]
+    },
+    {
+      "name": "profesional",
+      "item": [{"name": "Listar Profesionales",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/profesionales",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "profesionales"
+          ]
+        }
+      }
+    },
+    {"name": "Obtener Profesional",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/profesionales/1",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "profesionales",
+            "1"
+          ]
+        }
+      }
+    },
+    {"name": "Crear profesional",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nombre\": \"nuevo\",\r\n  \"apellido\": \"Apellido\",\r\n  \"email\": \"nuevo@gmail.com\",\r\n  \"titulo\": \"Ingeniero\",\r\n \"expAnnos\": 2,\r\n  \"ubicacion\": \"Periferico\",\r\n \"isActive\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/profesionales",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "profesionales"
+          ]
+        }
+      },
+      "response": []
+    },
+    {"name": "Actualizar profesional",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nombre\": \"NewEngineer\",\r\n  \"apellido\": \"Apellido\",\r\n  \"email\": \"nuevo@gmail.com\",\r\n  \"titulo\": \"Ingeniero\",\r\n \"expAnnos\": 2,\r\n  \"ubicacion\": \"Periferico\",\r\n \"isActive\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/profesionales/6",
+          "host": [ "localhost"],
+          "port": "3000",
+          "path": ["profesionales","6"]
+        }
+      },
+      "response": []
+    }]
     }
   ]
 }
