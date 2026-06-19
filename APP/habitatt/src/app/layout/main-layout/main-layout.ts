@@ -25,12 +25,12 @@ export class MainLayout {
   currentUser = signal<User | null>(null);
   publicMenu = signal<MenuItem[]>([
     { label: 'Inicio', path: '/', icon: 'home' },
-    { label: 'Catálogo', path: '/videojuegos', icon: 'sports_esports' },
+    { label: 'Catálogo', path: '/videojuegos', icon: 'square_foot' },
     { label: 'Ofertas', path: '/ofertas', icon: 'local_offer' },
     { label: 'Mis órdenes', path: '/ordenes', icon: 'receipt_long', roles: ['CLIENTE', 'ADMIN'] },
   ]);
   adminMaintenanceMenu = signal<MenuItem[]>([
-    { label: 'Videojuegos', path: '/admin/videojuegos', icon: 'sports_esports' },
+    { label: 'Videojuegos', path: '/admin/videojuegos', icon: 'construction' },
     { label: 'Categorías', path: '/admin/categorias', icon: 'category' },
     { label: 'Plataformas', path: '/admin/plataformas', icon: 'devices' },
   ]);

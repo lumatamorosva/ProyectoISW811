@@ -16,13 +16,13 @@ interface ContentCard {
 export class Home {
   cards = signal<ContentCard[]>([
     {
-      title: 'Videojuegos',
-      description: 'Mantenimiento de catálogo, categorías, etiquetas y plataformas.',
-      icon: 'sports_esports',
+      title: 'Servicios',
+      description: 'Mantenimiento del catálogo ofrecido.',
+      icon: 'construction',
     },
     {
-      title: 'Órdenes',
-      description: 'Registro de compras y detalle de videojuegos vendidos.',
+      title: 'Citas',
+      description: 'Registro de las citas en el sistema.',
       icon: 'receipt_long',
     },
     {
