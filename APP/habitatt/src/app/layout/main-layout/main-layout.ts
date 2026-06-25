@@ -30,9 +30,9 @@ export class MainLayout {
     { label: 'Mis órdenes', path: '/ordenes', icon: 'receipt_long', roles: ['CLIENTE', 'ADMIN'] },
   ]);
   adminMaintenanceMenu = signal<MenuItem[]>([
-    { label: 'Videojuegos', path: '/admin/videojuegos', icon: 'construction' },
-    { label: 'Categorías', path: '/admin/categorias', icon: 'category' },
-    { label: 'Plataformas', path: '/admin/plataformas', icon: 'devices' },
+    { label: 'Servicios', path: '/admin/servicios', icon: 'construction' },
+    { label: 'Categorias', path: '/admin/categorias', icon: 'category' },
+    { label: 'Especialidades', path: '/admin/especialidades', icon: 'devices' },
   ]);
   adminManagementMenu = signal<MenuItem[]>([
     { label: 'Órdenes', path: '/admin/ordenes', icon: 'shopping_bag' },
