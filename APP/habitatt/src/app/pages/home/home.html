@@ -1,15 +1,7 @@
 <section class="hero glass-card">
     <div class="hero-content">
-        <h1> De punta a punta </h1>
-        <p> Te ofrecemos servicios que te acompañan desde la idea hasta el último detalle </p>
-        <div class="hero-actions">
-            <button mat-flat-button class="secondary-button">
-                Ver Servicios
-            </button>
-            <button mat-flat-button class="tertiary-button">
-                Ver Profesionales
-            </button>
-        </div>
+        <h1 align="center"> De punta a punta </h1>
+        <h2> Te ofrecemos servicios que te acompañan desde la idea hasta el último detalle para que hagas tu sueño realidad con tranquilidad</h2>
     </div>
     <div class="hero-visual">
         <mat-icon>add_home_work</mat-icon>
@@ -17,7 +9,7 @@
 </section>
 <section class="summary-grid">
     @for (card of cards(); track card.title) {
-    <mat-card class="dashboard-card glass-card">
+    <mat-card [routerLink]="card.link" class="dashboard-card glass-card">
         <mat-card-header>
             <div class="card-icon ">
                 <mat-icon>{{ card.icon }}</mat-icon>

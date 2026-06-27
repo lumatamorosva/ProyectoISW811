@@ -34,13 +34,13 @@
     opacity: 0.75;
 }
 
-.games-grid {
+.grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
     gap: 1.25rem;
 }
 
-.game-card {
+.card {
     overflow: hidden;
     border-radius: 22px;
 
@@ -64,21 +64,6 @@
     color: var(--mat-sys-primary);
     font-size: 0.75rem;
     font-weight: 700;
-}
-
-.game-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    strong {
-        color: var(--mat-sys-tertiary);
-        font-size: 1.2rem;
-    }
-
-    span {
-        opacity: 0.7;
-    }
 }
 
 .state {

@@ -2,14 +2,16 @@ import { Component, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 interface ContentCard {
   title: string;
   description: string;
   icon: string;
+  link?: string;
 }
 @Component({
-  selector: 'app-home',
-  imports: [MatCardModule, MatIconModule, MatButtonModule],
+  selector: 'app-home', standalone: true,
+  imports: [MatCardModule, MatIconModule, MatButtonModule,RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -19,16 +21,25 @@ export class Home {
       title: 'Servicios',
       description: 'Mantenimiento del catálogo ofrecido.',
       icon: 'construction',
+      link: '/servicios',
     },
     {
       title: 'Citas',
-      description: 'Registro de las citas en el sistema.',
+      description: 'Vea y modifique sus citas.',
       icon: 'receipt_long',
+      link: '/citas',
     },
     {
-      title: 'Usuarios',
-      description: 'Gestión de usuarios, roles y acceso al sistema.',
-      icon: 'group',
+      title: 'Especialidades',
+      description: 'Encuentra el área que ocupas.',
+      icon: 'star_rate',
+      link: '/especialidades',
+    },
+    {
+      title: 'Profesionales',
+      description: 'Todos nuestros asociados.',
+      icon: 'badge',
+      link: '/profesionales',
     },
   ]);
 }

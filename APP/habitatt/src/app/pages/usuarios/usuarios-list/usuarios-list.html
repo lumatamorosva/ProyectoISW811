@@ -29,10 +29,10 @@
     <p>No hay ningún usuario encontrado.</p>
 </div>
 }
-<section class="games-grid">
+<section class="grid">
 
 @for(user of usuariosFiltrados(); track $index){
-        <mat-card class="game-card">
+        <mat-card class="card">
             <img mat-card-image [src]="getImageUrl(user.foto)" [alt]="user.nombre" />
             <mat-card-content>
                 <h2>{{user.nombre + "  " + user.apellido}} </h2>
