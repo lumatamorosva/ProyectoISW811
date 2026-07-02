@@ -2,9 +2,9 @@ export interface usuario{
     id: number;
     nombre: string;
     apellido: string;
-    email: string;
-    password: string;
-    telefono: string;
+    email?: string;
+    password?: string;
+    telefono?: string;
     isActive: boolean;
     role: string;
     foto: string;

@@ -1,11 +1,10 @@
 <section class="page-header">
-    <span class="eyebrow">Lista de Usuarios</span>
-    <p>        Usuarios en el sistema:    </p>
+    <h2> Usuarios en el sistema: </h2>
 </section>
 <section class="filters">
     <mat-form-field appearance="outline">
         <mat-label>Buscar por nombre</mat-label>
-        <input matInput (input)="search.set($any($event.target).value)" placeholder="Nombre o apellido"/>
+        <input matInput (input)="search.set($any($event.target).value)" placeholder="Nombre o apellido" />
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 </section>
@@ -18,10 +17,10 @@
     <p>Cargando...</p>
 </div>
 }@else if (error()) {
-    <div class="state error">
-        <mat-icon>error</mat-icon>
-        <p> {{error()}}</p>
-    </div>
+<div class="state error">
+    <mat-icon>error</mat-icon>
+    <p> {{error()}}</p>
+</div>
 }
 @else if (usuarios().length === 0) {
 <div class="state">
@@ -31,20 +30,21 @@
 }
 <section class="grid">
 
-@for(user of usuariosFiltrados(); track $index){
-        <mat-card class="card">
-            <img mat-card-image [src]="getImageUrl(user.foto)" [alt]="user.nombre" />
-            <mat-card-content>
-                <h2>{{user.nombre + "  " + user.apellido}} </h2>
-                <p> {{user.role}}</p>
-            </mat-card-content>
-            <mat-card-actions class="card-acciones">
-                <a mat-stroked-button color="primary" [routerLink]="['/Usuarios',user.id]" class="view-icon-button">
-                    Detalles<mat-icon>more_horiz</mat-icon>
-                </a>
-                <a mat-stroked-button [ngClass]="{'btn-activo': user.isActive, 'btn-inactivo': !user.isActive}">
-                    {{ user.isActive ? 'Habilitado' : 'Deshabilitado' }}
-                </a>
-            </mat-card-actions>
-        </mat-card>}
+    @for(user of usuariosFiltrados(); track $index){
+    <mat-card class="card">
+        <img mat-card-image [src]="getImageUrl(user.foto)" [alt]="user.nombre" />
+        <mat-card-content>
+            <h2>{{user.nombre + " " + user.apellido}} </h2>
+            <p> {{user.role}}</p>
+        </mat-card-content>
+        <mat-card-actions class="card-acciones">
+            @if (user && user.id) {
+            <a mat-stroked-button color="primary" [routerLink]="['/admin', 'usuario-detail', user.id]"
+                class="view-icon-button">Detalles<mat-icon>more_horiz</mat-icon>
+            </a>} @else {<button mat-stroked-button disabled>Cargando...<mat-icon>hourglass_empty</mat-icon></button> }
+            <a mat-stroked-button [ngClass]="{'btn-activo': user.isActive, 'btn-inactivo': !user.isActive}">
+                {{ user.isActive ? 'Habilitado' : 'Deshabilitado' }}
+            </a>
+        </mat-card-actions>
+    </mat-card>}
 </section>

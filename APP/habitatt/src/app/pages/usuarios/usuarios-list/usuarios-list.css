@@ -12,11 +12,12 @@
     h1 {
         margin: 0.35rem 0;
         font-size: clamp(2rem, 4vw, 3rem);
+        color: antiquewhite;
     }
 
-    p {
+    h2 {
         max-width: 680px;
-        opacity: 0.75;
+        color: aliceblue;
     }
 }
 

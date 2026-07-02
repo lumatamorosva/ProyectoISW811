@@ -2,7 +2,9 @@
   border: 1px solid color-mix(in srgb, var(--mat-sys-outline) 24%, transparent);
   background: color-mix(in srgb, var(--mat-sys-surface-container-high) 72%, transparent);
   backdrop-filter: blur(18px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 24px 60px rgba(241, 120, 7, 0.705);
+  border-radius: 8px !important;
+  margin-bottom: 3rem !important;
 }
 
 .hero {
@@ -17,6 +19,19 @@
 
 .hero-content {
   max-width: 720px;
+}
+
+.hero-image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;  
+  width: 100%;
+  
+}
+
+.img1 {
+  border-radius: 8px !important;
+  box-shadow: 0 24px 60px rgba(241, 120, 7, 0.705);
 }
 
 .eyebrow {

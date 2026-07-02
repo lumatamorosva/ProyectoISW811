@@ -90,16 +90,24 @@
     }
 }
 
-/* Cuando está Activo: texto y borde verde */
-.btn-activo {
-  color: #2e7d32 !important;
-  border-color: #2e7d32 !important;
+.tag-activo, .tag-inactivo {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-block;
 }
 
-/* Cuando está Inactivo: texto y borde rojo */
-.btn-inactivo {
-  color: #c62828 !important;
-  border-color: #c62828 !important;
+.tag-activo {
+    background-color: #e8f5e9; 
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+.tag-inactivo {
+    background-color: #ffe0b2; 
+    color: #ef6c00;
+    border: 1px solid #ffcc80;
 }
 
 .card-acciones {

@@ -40,9 +40,9 @@
                 <a mat-stroked-button color="primary" [routerLink]="['/servicios',servicio.id]" class="view-icon-button">
                     Detalles<mat-icon>more_horiz</mat-icon>
                 </a>
-                <a mat-stroked-button [ngClass]="{'btn-activo': servicio.isActive, 'btn-inactivo': !servicio.isActive}">
-                    {{ servicio.isActive ? 'Disponible' : 'Próximamente' }}
-                </a>
+                <span [ngClass]="{'tag-activo': servicio.isActive, 'tag-inactivo': !servicio.isActive}">
+    {{ servicio.isActive ? 'Disponible' : 'Próximamente' }}
+</span>
             </mat-card-actions>
         </mat-card>}
 </section>

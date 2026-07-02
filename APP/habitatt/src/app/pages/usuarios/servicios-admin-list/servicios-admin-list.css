@@ -1,0 +1,10 @@
+.descripcion{
+white-space: normal;
+word-break: break-word;
+}
+.mat-column-acciones {
+  white-space: nowrap;       
+  flex: 0 0 auto !important; 
+  width: max-content;  
+}
+

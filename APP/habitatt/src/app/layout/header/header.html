@@ -31,11 +31,12 @@
             }
         </nav>
         <span class="spacer"></span>
+        <!--
         <button mat-icon-button routerLink="/carrito" aria-label="Carrito de compras">
             <mat-icon [matBadge]="cartCount()" [matBadgeHidden]="cartCount() === 0" matBadgeColor="accent">
                 shopping_cart
             </mat-icon>
-        </button>
+        </button> -->
         @if (currentUser(); as user) {
         <div class="user-chip">
             <mat-icon>person</mat-icon>

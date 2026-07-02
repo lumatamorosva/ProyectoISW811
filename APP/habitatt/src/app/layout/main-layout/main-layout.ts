@@ -24,19 +24,17 @@ export class MainLayout {
   cartCount = signal(2);
   currentUser = signal<User | null>(null);
   publicMenu = signal<MenuItem[]>([
-    { label: 'Inicio', path: '/', icon: 'home' },
-    { label: 'Catálogo', path: '/servicios', icon: 'square_foot' },
-    { label: 'Ofertas', path: '/ofertas', icon: 'local_offer' },
-    { label: 'Mis citas', path: '/citas', icon: 'receipt_long', roles: ['CLIENTE', 'ADMIN'] },
+    { label: 'Servicios', path: '/servicios', icon: 'square_foot' },
+    { label: 'Citas', path: '/citas', icon: 'receipt_long', roles: ['CLIENTE', 'ADMIN'] },
   ]);
   adminMaintenanceMenu = signal<MenuItem[]>([
-    { label: 'Servicios', path: '/servicios', icon: 'construction' },
+    { label: 'Servicios', path: '/admin/servicios', icon: 'construction' },
     { label: 'Categorias', path: '/admin/categorias', icon: 'category' },
     { label: 'Especialidades', path: '/admin/especialidades', icon: 'devices' },
   ]);
   adminManagementMenu = signal<MenuItem[]>([
-    { label: 'Órdenes', path: '/admin/ordenes', icon: 'shopping_bag' },
     { label: 'Usuarios', path: '/admin/usuarios', icon: 'group' },
+    { label: 'Profesionales', path: '/admin/profesionales', icon: 'group' },
     { label: 'Reportes', path: '/admin/reportes', icon: 'bar_chart' },
   ]);
   isAdmin = computed(() => this.currentUser()?.role === 'ADMIN');

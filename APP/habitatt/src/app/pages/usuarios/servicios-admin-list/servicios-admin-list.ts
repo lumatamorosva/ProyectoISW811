@@ -2,32 +2,30 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { ServicioService } from '../../../../core/services/servicio.service';
 import { Servicio } from '../../../../core/models/servicio.model'
 import { FormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
-import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
-  selector: 'app-usuarios-list',
+  selector: 'app-servicios-admin-list',
   imports: [FormsModule,
     RouterLink,
-    MatCardModule,
     MatButtonModule,
     MatIconModule,
+    MatChipsModule,
+    MatTableModule,
     MatProgressSpinnerModule,
     MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    CommonModule],
-  templateUrl: './servicios-list.html',
-  styleUrl: './servicios-list.css',
+    MatInputModule,],
+  templateUrl: './servicios-admin-list.html',
+  styleUrl: './servicios-admin-list.css',
 })
-export class ServiciosList {
+export class ServiciosAdminList {
   private readonly serviciosService = inject(ServicioService);
   //Listar:
   servicios = signal<Servicio[]>([]);
@@ -37,11 +35,16 @@ export class ServiciosList {
   loading = signal(false);
   //Error
   error = signal<string | null>(null);
+  displayedColumns = [
+    'nombre',
+    'descripcion',
+    'acciones',
+  ];
 
   ngOnInit(): void {
-    this.loadServisios();
+    this.loadServicios();
   }
-  loadServisios(): void {
+  loadServicios(): void {
     this.loading.set(true);
     this.error.set(null);
 
