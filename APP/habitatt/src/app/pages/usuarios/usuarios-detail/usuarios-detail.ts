@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -18,6 +18,7 @@ import { UsuarioService } from '../../../../core/services/usuario.service';
     MatChipsModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    CommonModule
   ],
   templateUrl: './usuarios-detail.html',
   styleUrl: './usuarios-detail.css',

@@ -1,0 +1,105 @@
+<section>
+    <a mat-stroked-button class="nuevoBoton" [routerLink]="['/admin/servicios/create']">Crear nuevo servicio<mat-icon>add</mat-icon> </a>
+</section>
+<section class="page-header"><p></p>
+    <h1 >Administración de Servicios</h1>
+</section>
+<section class="filters">
+    <mat-form-field appearance="outline">
+        <mat-label>Busqueda</mat-label>
+        <input matInput (input)="search.set($any($event.target).value)" placeholder="Describe lo que buscas"/>
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Categorias:</mat-label>
+        <mat-select [(ngModel)]="catId">
+            <mat-option [value]="null">Todas</mat-option>
+        @for (c of cats(); track c.id){
+            <mat-option [value]="c.id">
+                {{c.nombre}}
+            </mat-option>
+        }</mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Modalidad:</mat-label>
+        <mat-select [(ngModel)]="modId">
+            <mat-option [value]="null">Todas</mat-option>
+        @for (m of modss(); track m.value){
+            <mat-option [value]="m.value">
+                {{m.label}}
+            </mat-option>
+        }</mat-select>
+    </mat-form-field>
+    <div>
+        <input [(ngModel)]="precioMinimo" aria-label="Precio mínimo">
+        <input [(ngModel)]="precioMaximo" aria-label="Precio máximo">
+    </div>
+</section>
+
+@if(loading()){
+<div class="state">
+    <mat-spinner diameter="42" />
+    <p>Cargando...</p>
+</div>
+}@else if (error()) {
+    <div class="state error">
+        <mat-icon>error</mat-icon>
+        <p> {{error()}}</p>
+    </div>
+}
+@else if (servicios().length === 0) {
+<div class="state">
+    <mat-icon>search_off</mat-icon>
+    <p>No hay ningún servicio que coincida.</p>
+</div>
+}
+<section>
+<div class="result-summary">  {{total()}} servicios encontrados: </div>
+    <div class="table-wrapper">
+        <table mat-table [dataSource]="Filtrados()" class="admin-table">
+            <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef>Servicio</th>
+            <td mat-cell *matCellDef="let serv">
+                <strong>{{ serv.nombre }}</strong>
+            </td>
+            </ng-container>
+            <ng-container matColumnDef="prof">
+            <th mat-header-cell *matHeaderCellDef>Profesional</th>
+            <td mat-cell *matCellDef="let serv">
+                <small>{{ serv.nombreProfesional }}</small>
+            </td>
+            </ng-container>
+            <ng-container matColumnDef="cat">
+            <th mat-header-cell *matHeaderCellDef>Categoría</th>
+            <td mat-cell *matCellDef="let serv">
+                <small>{{ serv.nombreCategoria }}</small>
+            </td>
+            </ng-container>
+            <ng-container matColumnDef="precio">
+            <th mat-header-cell *matHeaderCellDef>Precio</th>
+            <td mat-cell *matCellDef="let serv">
+                <strong>{{ serv.precio | currency:'₡':'symbol':'1.0-0'}} </strong>
+            </td>
+            </ng-container>
+            <ng-container matColumnDef="act">
+            <th mat-header-cell *matHeaderCellDef>Estado</th>
+            <td mat-cell *matCellDef="let serv">
+                <button [ngClass]="{'tag-inactivo': !serv.isActive, 'tag-activo': serv.isActive}"
+                        mat-stroked-button>{{ serv.isActive ? 'Activo' : 'Inactivo' }}<mat-icon>lock</mat-icon>
+                    </button>
+            </td>
+            </ng-container>
+            <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let serv">
+                    <a mat-stroked-button color="accent" class="edit-icon-button"
+                        [routerLink]="['/admin/servicios/editar', serv.id]">Editar<mat-icon>edit</mat-icon>
+                    </a>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+    </div>
+</section>

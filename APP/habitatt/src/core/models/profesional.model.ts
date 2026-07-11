@@ -1,4 +1,6 @@
-export interface Profesional{
+import { especialidad } from "./especialidad.model";
+
+export interface profesional{
     id: number;
     nombre: string;
     apellido: string;
@@ -7,14 +9,18 @@ export interface Profesional{
     titulo: string;
     expAnnos: number;
     ubicacion: string;
+    modalidad: string;
+    tarifaBase: number;
     isActive: boolean;
+    isAvailable: boolean;
+    foto: string;
+    especialidades?: especialidad[];
 
     createdAt: string;
     updatedAt: string;
 }
 
 export interface ProfesionaCreateDto{
-    id: number;
     nombre: string;
     apellido: string;
     email: string;
@@ -22,11 +28,16 @@ export interface ProfesionaCreateDto{
     titulo: string;
     expAnnos: number;
     ubicacion: string;
+    modalidad: string;
+    tarifaBase: number;
     isActive: boolean;
+    isAvailable: boolean;
+    foto: string;
+
+    especialidades?: especialidad[];
 }
 
 export interface ProfesionalUpdateDto{
-    id: number;
     nombre: string;
     apellido: string;
     email: string;
@@ -34,5 +45,29 @@ export interface ProfesionalUpdateDto{
     titulo: string;
     expAnnos: number;
     ubicacion: string;
+    modalidad: string;
+    tarifaBase: number;
     isActive: boolean;
+    isAvailable: boolean;
+    foto: string;
+
+    especialidades?: especialidad[];
 }
+
+export interface ProfesionalFormModel{
+    nombre: string;
+    apellido: string;
+    email: string;
+    telefono: string;
+    titulo: string;
+    expAnnos: number;
+    ubicacion: string;
+    modalidad: string;
+    tarifaBase: number;
+    isActive: boolean;
+    isAvailable: boolean;
+    foto: string;
+
+    especialidades?: especialidad[];
+}
+

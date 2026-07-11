@@ -1,0 +1,13 @@
+<section class="page-container">
+    <header class="page-header"> <h1>Crear nuevo profesional</h1> </header>
+    @if (loading()) {
+        <p>Cargando datos para el formulario...</p>
+    } @else {
+        @if (error()) { <p class="error-message"> {{ error() }} </p> }
+        <app-profesionales-form
+            [saving]="saving()"
+            (guardar)="guardar($event)"
+            (cancelar)="cancelar()"
+        />
+    }
+</section>

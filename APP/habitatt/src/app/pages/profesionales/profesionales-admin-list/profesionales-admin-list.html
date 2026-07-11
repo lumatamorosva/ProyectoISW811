@@ -1,0 +1,98 @@
+<section>
+    <a mat-stroked-button class="nuevoBoton" [routerLink]="['/admin/profesionales/create']">Crear nuevo profesional<mat-icon>add</mat-icon> </a>
+</section>
+<section class="page-header">
+    <h1 >Profesionales registrados</h1>
+</section>
+<section class="filters">
+    <mat-form-field appearance="outline">
+        <mat-label>Busqueda</mat-label>
+        <input matInput (input)="search.set($any($event.target).value)" placeholder="Buscar por nombre"/>
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+<mat-form-field>
+        <mat-label>Especialidades:</mat-label>
+        <mat-select [(ngModel)]="especialidadId">
+            <mat-option [value]="null">Todas</mat-option>
+        @for (e of epc(); track e.id){
+            <mat-option [value]="e.id">
+                {{e.nombre}}
+            </mat-option>
+        }</mat-select>
+    </mat-form-field>
+    <mat-checkbox [(ngModel)]="disponible">Solo disponibles</mat-checkbox>
+</section>
+
+<div class="result-summary">
+    {{total()}} de profesionales registrados.
+</div>
+@if(loading()){
+<div class="state">
+    <mat-spinner diameter="42" />
+    <p>Cargando...</p>
+</div>
+}@else if (error()) {
+    <div class="state error">
+        <mat-icon>error</mat-icon>
+        <p> {{error()}}</p>
+    </div>
+}
+@else if (profs().length === 0) {
+<div class="state">
+    <mat-icon>search_off</mat-icon>
+    <p>No se encuentra profesionales</p>
+</div>
+}
+<section>
+    <div class="table-wrapper">
+        <table mat-table [dataSource]="profesionalesFiltrados()" class="admin-table">
+            <ng-container matColumnDef="image">
+                <th mat-header-cell *matHeaderCellDef> Fotografía </th>
+                <td mat-cell *matCellDef="let p">
+                <img class="thumbnail" mat-card-image [src]="getImageUrl(p.foto)" [alt]="p.foto" /></td>
+            </ng-container>
+            <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef>nombre</th>
+            <td mat-cell *matCellDef="let p">
+                <strong>{{ p.nombre }}  {{p.apellido }}</strong>
+            </td>
+            </ng-container>
+            <ng-container matColumnDef="titulo">
+            <th mat-header-cell *matHeaderCellDef>título</th>
+            <td mat-cell *matCellDef="let p">
+                <small>{{ p.titulo }}</small>
+            </td>
+            </ng-container>
+            <ng-container matColumnDef="modalidad">
+            <th mat-header-cell *matHeaderCellDef>Modalidad</th>
+            <td mat-cell *matCellDef="let p">
+                <small>{{ p.modalidad }}</small>
+            </td>
+            </ng-container>
+            <ng-container matColumnDef="tarifa">
+            <th mat-header-cell *matHeaderCellDef>Tarifa Base</th>
+            <td mat-cell *matCellDef="let p">
+                <small>{{ p.tarifaBase| currency:'₡':'symbol':'1.0-0' }}</small>
+            </td>
+            </ng-container>
+            <ng-container matColumnDef="disponibilidad">
+            <th mat-header-cell *matHeaderCellDef>Disponible</th>
+            <td mat-cell *matCellDef="let p">
+                @if(p.isAvailable){ <mat-icon>thumb_up</mat-icon> }
+            </td>
+            </ng-container>
+            <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let p">
+                <a mat-stroked-button color="accent" class="edit-icon-button"
+                        [routerLink]="['/admin/profesionales/editar', p.id]">Editar<mat-icon>edit</mat-icon> </a>
+                    @if(p.isActive){ <button  mat-stroked-button class="btn-inactivo" (click)="cambiarEstado(p)">Inactivar<mat-icon>lock</mat-icon> </button>
+                    }@else { <button  mat-stroked-button class="btn-activo" (click)="cambiarEstado(p)">Activar<mat-icon>lock</mat-icon> </button> }
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+    </div>
+</section>

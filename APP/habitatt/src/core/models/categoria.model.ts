@@ -1,4 +1,4 @@
-export interface Categoria{
+export interface categoria{
     id: number;
     nombre: string;
     descripcion: string;
@@ -9,14 +9,18 @@ export interface Categoria{
 }
 
 export interface CategoriaCreateDto{
-    id: number;
     nombre: string;
     descripcion: string;
     isActive: boolean;
 }
 
 export interface CategoriaUpdateDto{
-    id: number;
+    nombre: string;
+    descripcion: string;
+    isActive: boolean;
+}
+
+export interface CategoriaFormModel{
     nombre: string;
     descripcion: string;
     isActive: boolean;

@@ -1,0 +1,17 @@
+<section class="page-container">
+    <header class="page-header"> <h1>Crear nuevo servicio</h1> </header>
+
+    @if (loading()) {
+        <p>Cargando datos del formulario...</p>
+    } @else {
+        @if (error()) { <p class="error-message"> {{ error() }} </p> }
+
+        <app-servicio-form
+            [service]="servicio()"
+            [categoria]="categoria()"
+            [saving]="saving()"
+            (guardar)="guardar($event)"
+            (cancelar)="cancelar()"
+        />
+    }
+</section>

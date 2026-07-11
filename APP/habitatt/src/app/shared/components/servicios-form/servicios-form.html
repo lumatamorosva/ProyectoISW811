@@ -1,0 +1,98 @@
+<mat-card class="game-form-card">
+    <mat-card-content>
+        <form class="game-form" (submit)="$event.preventDefault(); submit()">
+            <section class="form-section">
+               <div class="form-grid">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput type="text" [formField]="serviceForm.nombre" />
+                    @if (serviceForm.nombre().touched() && serviceForm.nombre().invalid()) {
+                        <mat-error>
+                        {{ serviceForm.nombre().errors()[0].message }}
+                        </mat-error>
+                        }
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Descripción</mat-label>
+                    <textarea matInput rows="4" [formField]="serviceForm.descripcion"></textarea>
+                    @if (serviceForm.descripcion().touched() && serviceForm.descripcion().invalid()) {
+                        <mat-error>
+                        {{ serviceForm.descripcion().errors()[0].message }}
+                        </mat-error>
+                        }
+                </mat-form-field>
+                </div>
+                <div class="form-grid three-columns">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Precio</mat-label>
+                        <input matInput type="number" [formField]="serviceForm.precio" />
+                        @if (serviceForm.precio().touched() && serviceForm.precio().invalid()) {
+                        <mat-error>
+                            {{ serviceForm.precio().errors()[0].message }}
+                        </mat-error>
+                        }
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Duración inicial</mat-label>
+                        <input matInput type="number" [formField]="serviceForm.duracionMinutos" />
+                        @if (serviceForm.duracionMinutos().touched() && serviceForm.duracionMinutos().invalid()) {
+                            <mat-error>
+                                {{ serviceForm.duracionMinutos().errors()[0].message }}
+                            </mat-error>
+                            }
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Categoría</mat-label>
+                        <mat-select [formField]="serviceForm.categoriaId">
+                            <mat-option [value]="null"> Seleccione una categoría </mat-option>
+                            @for (c of categorias(); track c.id) {
+                            <mat-option [value]="c.id"> {{ c.nombre }} </mat-option> }
+                        </mat-select>
+                        @if (serviceForm.categoriaId().touched() && serviceForm.categoriaId().invalid()) {
+                            <mat-error> {{ serviceForm.categoriaId().errors()[0].message }}  </mat-error> }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Modalidad</mat-label>
+                        <mat-select [formField]="serviceForm.modality">
+                            <mat-option [value]="null"> Seleccione una modalidad  </mat-option>
+                            @for (m of mods(); track m.value) {
+                            <mat-option [value]="m.value"> {{ m.label }} </mat-option>  }
+                        </mat-select>
+                        @if (serviceForm.modality().touched() && serviceForm.modality().invalid()) {
+                            <mat-error> {{ serviceForm.modality().errors()[0].message }} </mat-error> }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Profesional a cargo: </mat-label>
+                        <mat-select [formField]="serviceForm.profesionalId">
+                            <mat-option [value]="null"> Seleccione un profesional </mat-option>
+                            @for (p of profesionals(); track p.id) {
+                            <mat-option [value]="p.id"> {{ p.nombre }} {{p.apellido}}</mat-option> }
+                        </mat-select>
+                        @if (serviceForm.profesionalId().touched() && serviceForm.profesionalId().invalid()) {
+                            <mat-error> {{ serviceForm.profesionalId().errors()[0].message }}  </mat-error> }
+                    </mat-form-field>
+
+                    <div class="publish-box">
+                        <mat-checkbox [formField]="serviceForm.isActive"> Servicio Activo </mat-checkbox>
+                    </div>
+                </div>
+                
+            </section>
+
+    <div class="form-actions">
+            <button mat-stroked-button color="accent" class="primary-icon-button" type="button"
+                (click)="cancelar.emit()"> <mat-icon>close</mat-icon> Cancelar </button>
+
+            <button mat-stroked-button type="submit" [color]="isEdit() ? 'accent' : 'primary'"
+                [class.edit-icon-button]="isEdit()" [class.create-icon-button]="!isEdit()"
+                [disabled]="isSubmitting()">
+                @if (isSubmitting()) { <mat-icon>hourglass_top</mat-icon> Guardando...
+                } @else { <mat-icon> {{ isEdit() ? 'edit' : 'add_circle' }}
+                </mat-icon> {{ isEdit() ? 'Actualizar' : 'Registrar' }} }
+            </button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

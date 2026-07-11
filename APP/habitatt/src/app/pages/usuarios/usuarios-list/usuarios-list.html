@@ -7,6 +7,16 @@
         <input matInput (input)="search.set($any($event.target).value)" placeholder="Nombre o apellido" />
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
+    <mat-form-field>
+        <mat-label>Roles:</mat-label>
+        <mat-select [(ngModel)]="rolId">
+            <mat-option [value]="null">Todos los roles</mat-option>
+        @for (r of rolLista(); track r.value){
+            <mat-option [value]="r.label">
+                {{r.label}}
+            </mat-option>
+        }</mat-select>
+    </mat-form-field>
 </section>
 <div class="result-summary">
     {{total()}} usuarios registrados.
@@ -35,16 +45,17 @@
         <img mat-card-image [src]="getImageUrl(user.foto)" [alt]="user.nombre" />
         <mat-card-content>
             <h2>{{user.nombre + " " + user.apellido}} </h2>
-            <p> {{user.role}}</p>
+            <h3>Correo: {{user.email }} </h3>
+            <h3>Rol:  {{user.role}}</h3>
         </mat-card-content>
         <mat-card-actions class="card-acciones">
             @if (user && user.id) {
             <a mat-stroked-button color="primary" [routerLink]="['/admin', 'usuario-detail', user.id]"
                 class="view-icon-button">Detalles<mat-icon>more_horiz</mat-icon>
             </a>} @else {<button mat-stroked-button disabled>Cargando...<mat-icon>hourglass_empty</mat-icon></button> }
-            <a mat-stroked-button [ngClass]="{'btn-activo': user.isActive, 'btn-inactivo': !user.isActive}">
+            <button mat-stroked-button [ngClass]="{'btn-activo': user.isActive, 'btn-inactivo': !user.isActive}" (click)="cambiarEstado(user)">
                 {{ user.isActive ? 'Habilitado' : 'Deshabilitado' }}
-            </a>
+            </button>
         </mat-card-actions>
     </mat-card>}
 </section>

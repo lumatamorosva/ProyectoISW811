@@ -34,7 +34,8 @@ export class MainLayout {
   ]);
   adminManagementMenu = signal<MenuItem[]>([
     { label: 'Usuarios', path: '/admin/usuarios', icon: 'group' },
-    { label: 'Profesionales', path: '/admin/profesionales', icon: 'group' },
+    { label: 'Profesionales', path: '/admin/profesionales', icon: 'work' },
+    { label: 'Citas', path: '/admin/citas', icon: 'receipt_long' },
     { label: 'Reportes', path: '/admin/reportes', icon: 'bar_chart' },
   ]);
   isAdmin = computed(() => this.currentUser()?.role === 'ADMIN');

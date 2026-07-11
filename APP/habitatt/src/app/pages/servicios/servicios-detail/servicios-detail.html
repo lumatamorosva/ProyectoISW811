@@ -1,1 +1,33 @@
-<p>servicios-detail works!</p>
+@if (loading()) {
+<div class="state">
+    <mat-spinner diameter="42" />
+    <p>Cargando detalles...</p>
+</div>}
+@if (error()) {
+<div class="state error">
+    <mat-icon>error</mat-icon>
+    <p> </p>
+</div>}
+
+@if (!loading() && servicio(); as serv) {
+<section class="detail-layout">
+    <section class="info"> 
+        @if (serv && serv.id) {
+            <a mat-stroked-button [ngClass]="{'btn-activo': serv.isActive, 'btn-inactivo': !serv.isActive}">
+                {{ serv.isActive ? 'Disponible' : 'Próximamente' }}
+            </a><p></p>
+            @if(serv.isActive){
+                <a mat-stroked-button color="primary" [routerLink]="['/servicios', 'servicios-detail', serv.id]"
+                class="view-icon-button"><mat-icon>receipt_long</mat-icon>Apartar una cita en este servicio</a><p></p>}
+            }
+        <h1>{{ serv.nombre }}</h1>
+        <h2>{{ serv.descripcion }}</h2>
+        <p>Categoría: {{ nombreCategoria() }}</p>
+        <p>Tiempo estimado: {{ serv.duracionMinutoss }} minutos</p>
+        <p>Precio inicial: ₡ {{ serv.precio }}</p><p></p>
+        <h2 >Encargado:  {{ nombreProfesional() }}</h2>
+        <p>Modalidad: {{serv.modality}}</p>
+    </section>
+</section>
+}
+<a mat-button routerLink="/servicios"> <mat-icon routerLink="/servicios">arrow_back</mat-icon>Volver a la lista de Servicios</a>

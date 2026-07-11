@@ -1,0 +1,26 @@
+@if (loading()) {
+<div class="state">
+    <mat-spinner diameter="42" />
+    <p>Cargando detalle de la cita...</p>
+</div>}
+@if (error()) {
+<div class="state error">
+    <mat-icon>error</mat-icon>
+    <p> Error al cargar la cita </p>
+</div>}
+
+@if (!loading() && cita(); as cit) {
+<section class="detail-layout">
+    <section class="info">
+        <h1>Cita: {{ cit.id }}</h1>
+        <h2>Cliente: {{ nombreCliente() }}</h2>
+        <h2>Profesional contratado: {{ nombreProfesional() }}</h2>
+        <h2>Servicio contratado: {{ nombreServicio() }}</h2>
+        <p>Apartada para {{ cit.fecha | date:'dd/MM/yyyy' }} a las {{cit.hora}}</p>
+        <p>Modalidad: {{ cit.modalidad.toLowerCase() }}</p>
+        <p>Descripción: {{ cit.descripcion }}</p>
+        <span >Estado de la cita:  {{ cit.status }}</span>
+    </section>
+</section>
+}
+<a mat-button routerLink="/admin/citas"> <mat-icon routerLink="/admin/citas">arrow_back</mat-icon> Volver a la lista de citas </a>

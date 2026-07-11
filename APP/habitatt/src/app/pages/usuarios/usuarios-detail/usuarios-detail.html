@@ -16,13 +16,18 @@
     </mat-card>
 
     <section class="info"> 
+        @if (user && user.id) {
+            <a mat-stroked-button [ngClass]="{'btn-activo': user.isActive, 'btn-inactivo': !user.isActive}">
+                {{ user.isActive ? 'Habilitado' : 'Deshabilitado' }}
+            </a><p></p>
+        <a mat-stroked-button color="primary" [routerLink]="['/admin', 'usuario-detail', user.id]"
+            class="view-icon-button">Ver ordenes del usuario<mat-icon>receipt_long</mat-icon></a><p></p>}
         <h1>{{ user.nombre }}</h1>
         <h1>{{ user.apellido }}</h1>
         <h2>Datos del usuario:</h2>
         <p>{{ user.email }}</p>
         <p>{{ user.telefono }}</p>
-        <a mat-stroked-button color="primary" [routerLink]="['/admin', 'usuario-detail', user.id]"
-            class="view-icon-button">Ver ordenes del usuario<mat-icon>receipt_long</mat-icon></a><p></p>
+        
         <span >Rol:  {{ user.role }}</span>
     </section>
 </section>

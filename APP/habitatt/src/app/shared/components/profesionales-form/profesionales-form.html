@@ -1,0 +1,116 @@
+<mat-card class="game-form-card">
+    <mat-card-content>
+        <form class="game-form" (submit)="$event.preventDefault(); submit()">
+            <section class="form-section">
+               <div class="form-grid">Datos personales y contacto:
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput type="text" [formField]="profesionalForm.nombre" />
+                    @if (profesionalForm.nombre().touched() && profesionalForm.nombre().invalid()) {
+                        <mat-error>{{ profesionalForm.nombre().errors()[0].message }}</mat-error> }
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Apellido</mat-label>
+                    <input matInput type="text" [formField]="profesionalForm.apellido" />
+                    @if (profesionalForm.apellido().touched() && profesionalForm.apellido().invalid()) {
+                        <mat-error>{{ profesionalForm.apellido().errors()[0].message }}</mat-error> }
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="text" [formField]="profesionalForm.email" />
+                    @if (profesionalForm.email().touched() && profesionalForm.email().invalid()) {
+                        <mat-error>{{ profesionalForm.email().errors()[0].message }}</mat-error> }
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Telefono</mat-label>
+                    <input matInput type="text" [formField]="profesionalForm.telefono" />
+                    @if (profesionalForm.telefono().touched() && profesionalForm.telefono().invalid()) {
+                        <mat-error>{{ profesionalForm.telefono().errors()[0].message }}</mat-error> }
+                </mat-form-field>
+            
+                <div class="image-layout">
+                    <div class="image-upload-box">
+                        <button mat-stroked-button type="button" color="primary" (click)="fileInput.click()">
+                            <mat-icon>upload</mat-icon>Seleccionar foto del profesional
+                        </button>
+                        <input #fileInput hidden type="file" accept="image/jpeg,image/png,image/webp"
+                            (change)="onImageSelected($event)" />
+                        @if (uploadingImage()) {
+                        <div class="uploading">
+                            <mat-spinner diameter="28"></mat-spinner>
+                            <span>Subiendo imagen...</span>
+                        </div>}
+                    </div>
+                    <div class="image-preview-box">
+                        @if (imagePreview()) {
+                        <img class="image-preview" [src]="imagePreview()" alt="Imagen subida" />
+                        } @else {
+                        <div class="empty-preview">
+                            <mat-icon>image_not_supported</mat-icon>
+                            <span>Sin imagen seleccionada</span>
+                        </div>}
+                    </div>
+                </div>
+
+            </div>
+                </section>
+                <section class="form-section">
+                    <div class="form-grid">Datos laborales:
+                 <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Título</mat-label>
+                    <input matInput type="text" [formField]="profesionalForm.titulo" />
+                    @if (profesionalForm.titulo().touched() && profesionalForm.titulo().invalid()) {
+                        <mat-error>{{ profesionalForm.titulo().errors()[0].message }}</mat-error> }
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Años de experiencia</mat-label>
+                    <input matInput type="number" [formField]="profesionalForm.expAnnos" />
+                    @if (profesionalForm.expAnnos().touched() && profesionalForm.expAnnos().invalid()) {
+                        <mat-error>{{ profesionalForm.expAnnos().errors()[0].message }}</mat-error> }
+                </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Tarifa Base</mat-label>
+                        <input matInput type="number" [formField]="profesionalForm.tarifaBase" />
+                        @if (profesionalForm.tarifaBase().touched() && profesionalForm.tarifaBase().invalid()) {
+                            <mat-error>{{ profesionalForm.tarifaBase().errors()[0].message }} </mat-error>}
+                    </mat-form-field>    
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Ubicación</mat-label>
+                    <input matInput type="text" [formField]="profesionalForm.ubicacion" />
+                    @if (profesionalForm.ubicacion().touched() && profesionalForm.ubicacion().invalid()) {
+                        <mat-error>{{ profesionalForm.ubicacion().errors()[0].message }}</mat-error> }
+                </mat-form-field>    </div> 
+            </section>
+            <section class="form-section">
+                <div> Datos en la aplicación: <p></p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Modalidad</mat-label>
+                        <mat-select [formField]="profesionalForm.modalidad">
+                            <mat-option [value]="null"> Seleccione una modalidad  </mat-option>
+                            @for (m of mods(); track m.value) {
+                            <mat-option [value]="m.value"> {{ m.label }} </mat-option>  }
+                        </mat-select>
+                        @if (profesionalForm.modalidad().touched() && profesionalForm.modalidad().invalid()) {
+                            <mat-error> {{ profesionalForm.modalidad().errors()[0].message }} </mat-error> }
+                    </mat-form-field>
+                        <mat-checkbox [formField]="profesionalForm.isActive"> Profesional Habilitado</mat-checkbox>
+                
+                        <mat-checkbox [formField]="profesionalForm.isAvailable"> Profesional Disponible</mat-checkbox>
+                  </div>  
+            </section>
+
+    <div class="form-actions">
+            <button mat-stroked-button color="accent" class="primary-icon-button" type="button"
+                (click)="cancelar.emit()"> <mat-icon>close</mat-icon> Cancelar </button>
+
+            <button mat-stroked-button type="submit" [color]="isEdit() ? 'accent' : 'primary'"
+                [class.edit-icon-button]="isEdit()" [class.create-icon-button]="!isEdit()"
+                [disabled]="isSubmitting()">
+                @if (isSubmitting()) { <mat-icon>hourglass_top</mat-icon> Guardando...
+                } @else { <mat-icon> {{ isEdit() ? 'edit' : 'add_circle' }}
+                </mat-icon> {{ isEdit() ? 'Actualizar' : 'Guardar' }} }
+            </button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

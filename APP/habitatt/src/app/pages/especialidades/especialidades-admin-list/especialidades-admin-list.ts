@@ -1,6 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { ServicioService } from '../../../../core/services/servicio.service';
-import { Servicio } from '../../../../core/models/servicio.model'
+import { EspecialidadService } from '../../../../core/services/especialidad.service';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +9,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
+import { especialidad} from '../../../../core/models/especialidad.model';
+import { CommonModule } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-servicios-admin-list',
@@ -21,52 +23,60 @@ import { MatChipsModule } from '@angular/material/chips';
     MatTableModule,
     MatProgressSpinnerModule,
     MatFormFieldModule,
-    MatInputModule,],
-  templateUrl: './servicios-admin-list.html',
-  styleUrl: './servicios-admin-list.css',
+    MatInputModule,
+    CommonModule,
+  MatSelectModule],
+  templateUrl: './especialidades-admin-list.html',
+  styleUrl: './especialidades-admin-list.css',
 })
-export class ServiciosAdminList {
-  private readonly serviciosService = inject(ServicioService);
+export class EspecialidadesAdminList {
+  private readonly SpService = inject(EspecialidadService);
   //Listar:
-  servicios = signal<Servicio[]>([]);
+  specs = signal<especialidad[]>([]);
   //Filtro de busqueda
   search = signal('');
   //Indicador de carga
   loading = signal(false);
   //Error
   error = signal<string | null>(null);
+  //Para filtrar por activo/inactivo
+  status = signal<number | null>(null);
   displayedColumns = [
     'nombre',
     'descripcion',
+    'precio',
+    'activa',
     'acciones',
   ];
 
   ngOnInit(): void {
-    this.loadServicios();
+    this.loadDataEspecialidades();
   }
-  loadServicios(): void {
+  loadDataEspecialidades(): void {
     this.loading.set(true);
     this.error.set(null);
 
-    this.serviciosService.listar().subscribe({
+    this.SpService.listar().subscribe({
       next: (response) => {
-        this.servicios.set(response.data);
+        this.specs.set(response.data);
         this.loading.set(false);
-        console.log('Servicios cargados:', response.data);
+        console.log('Especilidades encontradas:', response.data);
       },
       error: () => {
-        this.error.set('No se pudieron cargar los servicios.');
+        this.error.set('No se pudieron cargar especialidades.');
         this.loading.set(false);
       },
     });
   }
   Filtrados = computed(() => {
     const text = this.search().trim().toLowerCase();
-    return this.servicios().filter((servicio) => {
-      const nombre = servicio.nombre?.toLocaleLowerCase() ?? '';
-      const descripcion = servicio.descripcion?.toLowerCase() ?? '';
-      const coincidencia = text.length === 0 || nombre.includes(text) || descripcion.includes(text)
-      return coincidencia;
+    const selectedStatus = this.status();
+    return this.specs().filter((specialt) => {
+      const stat = specialt.isActive? 1 : 0;
+      const nombre = specialt.nombre?.toLocaleLowerCase() ?? '';
+      const coincidencia = text.length === 0 || nombre.includes(text);
+      const coincideStatus = selectedStatus === null || stat === selectedStatus;
+      return coincidencia && coincideStatus;
     });
   })
 

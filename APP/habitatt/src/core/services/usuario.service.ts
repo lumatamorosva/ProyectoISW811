@@ -1,5 +1,4 @@
-import { Service } from '@angular/core';
-import {usuario} from '../models/usuario.model'
+import {usuario, usuarioCreateDto, usuarioUpdateDto} from '../models/usuario.model'
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
@@ -20,6 +19,14 @@ export class UsuarioService {
 
   getImageUrl(imageName: string): string {
     return `${environment.imageUrl}/${imageName}`;
+  }
+
+  crear(data: usuarioCreateDto) {
+        return this.http.post<ApiResponse<usuario>>(this.apiUrl, data);
+      }
+    
+  actualizar(id: number, data: Partial<usuarioUpdateDto>) {
+    return this.http.put<ApiResponse<usuario>>(`${this.apiUrl}/${id}`, data);
   }
 
 }

@@ -1,0 +1,19 @@
+.btn-activo, .btn-inactivo {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.btn-activo {
+    background-color: #e8f5e9; 
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+.btn-inactivo {
+    background-color: #ffe0b2; 
+    color: #ef6c00;
+    border: 1px solid #ffcc80;
+}

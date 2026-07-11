@@ -10,7 +10,6 @@ export interface usuario{
     foto: string;
 }
 export interface usuarioCreateDto{
-    id: number;
     nombre: string;
     apellido: string;
     email: string;
@@ -21,7 +20,17 @@ export interface usuarioCreateDto{
     foto: string;
 }
 export interface usuarioUpdateDto{
-    id: number;
+    nombre: string;
+    apellido: string;
+    email: string;
+    password: string;
+    telefono: string;
+    isActive: boolean;
+    role: string;
+    foto: string;
+}
+
+export interface usuarioFormModel{
     nombre: string;
     apellido: string;
     email: string;

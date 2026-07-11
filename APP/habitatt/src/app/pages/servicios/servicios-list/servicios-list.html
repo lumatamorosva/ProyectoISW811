@@ -7,6 +7,31 @@
         <input matInput (input)="search.set($any($event.target).value)" placeholder="Describe lo que buscas"/>
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
+    <mat-form-field>
+        <mat-label>Categorias:</mat-label>
+        <mat-select [(ngModel)]="catId">
+            <mat-option [value]="null">Todas</mat-option>
+        @for (c of cats(); track c.id){
+            <mat-option [value]="c.id">
+                {{c.nombre}}
+            </mat-option>
+        }</mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Modalidad:</mat-label>
+        <mat-select [(ngModel)]="modId">
+            <mat-option [value]="null">Todas</mat-option>
+        @for (m of modss(); track m.value){
+            <mat-option [value]="m.value">
+                {{m.label}}
+            </mat-option>
+        }</mat-select>
+    </mat-form-field>
+    <div>
+        <input [(ngModel)]="precioMinimo" aria-label="Precio mínimo">
+        <input [(ngModel)]="precioMaximo" aria-label="Precio máximo">
+    </div>
+  
 </section>
 <div class="result-summary">
     {{total()}} servicios encontrados.
@@ -35,14 +60,18 @@
             <mat-card-content>
                 <h2>{{servicio.nombre}} </h2>
                 <p> {{servicio.descripcion}}</p>
+                <div class="inlinetext"> <h4 >Modalidad:</h4><h3 >{{servicio.modality.toLowerCase()}}</h3></div>
+                <div class="inlinetext"> <h4 >Categoría:</h4><h3 >{{servicio.nombreCategoria}}</h3></div>
+                <h2>Precio base: {{servicio.precio | currency:'₡':'symbol':'1.0-0'}} </h2>
+                <h2>Encargado: {{servicio.nombreProfesional}} </h2>
             </mat-card-content>
             <mat-card-actions class="card-acciones">
                 <a mat-stroked-button color="primary" [routerLink]="['/servicios',servicio.id]" class="view-icon-button">
                     Detalles<mat-icon>more_horiz</mat-icon>
                 </a>
                 <span [ngClass]="{'tag-activo': servicio.isActive, 'tag-inactivo': !servicio.isActive}">
-    {{ servicio.isActive ? 'Disponible' : 'Próximamente' }}
-</span>
+                    {{ servicio.isActive ? 'Disponible' : 'Próximamente' }}
+                </span>
             </mat-card-actions>
         </mat-card>}
 </section>
