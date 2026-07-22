@@ -20,7 +20,7 @@ export interface createCitaDto{
     hora: string;
     descripcion: string;
     status: string;
-    modality: string;
+    modalidad: string;
 
     clienteId: number;
     profesionalId: number;
@@ -31,7 +31,7 @@ export interface updateCitaDto{
     hora: string;
     descripcion: string;
     status: string;
-    modality: string;
+    modalidad: string;
 
     clienteId: number;
     profesionalId: number;
@@ -42,9 +42,13 @@ export interface citaFormModel{
     hora: string;
     descripcion: string;
     status: string;
-    modality: string;
+    modalidad: string;
 
     clienteId: number;
     profesionalId: number;
     servicioId: number;
+
+    nombreProfesional: string;
+    nombreCliente: string;
+    nombreServicio: string;
 }

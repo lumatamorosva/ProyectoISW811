@@ -198,8 +198,8 @@ private resetForm() {
       this.profesionalForm.isAvailable().invalid() ||
       this.profesionalForm.tarifaBase().invalid() ||
       this.profesionalForm.expAnnos().invalid() ||
-      this.profesionalForm.foto().invalid() ||
-      this.profesionalForm.modalidad().invalid()
+      this.profesionalForm.modalidad().invalid() ||
+      this.profesionalForm.foto().invalid() && !this.selectedImageFile()
     );
   }
 private buildDto(): ProfesionaCreateDto | ProfesionalUpdateDto {

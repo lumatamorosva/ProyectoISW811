@@ -162,7 +162,7 @@ private buildDto(): ServicioCreateDto | ServicioUpdateDto {
   }
 
   private obtenerCats(): void {
-   this.catServ.listar().subscribe({
+  this.catServ.listar().subscribe({
       next: (response) => {
         this.categorias.set(response.data);
       }

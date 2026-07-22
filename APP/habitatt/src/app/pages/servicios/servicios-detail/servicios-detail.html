@@ -17,7 +17,7 @@
                 {{ serv.isActive ? 'Disponible' : 'Próximamente' }}
             </a><p></p>
             @if(serv.isActive){
-                <a mat-stroked-button color="primary" [routerLink]="['/servicios', 'servicios-detail', serv.id]"
+                <a mat-stroked-button color="primary" [routerLink]="['/citas/create']"
                 class="view-icon-button"><mat-icon>receipt_long</mat-icon>Apartar una cita en este servicio</a><p></p>}
             }
         <h1>{{ serv.nombre }}</h1>

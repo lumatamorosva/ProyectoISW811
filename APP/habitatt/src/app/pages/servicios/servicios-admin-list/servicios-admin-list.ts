@@ -107,7 +107,7 @@ export class ServiciosAdminList {
                       const servicioModificado = {
                         ...servicio,
                         nombreProfesional: profesionalEncontrado? `${profesionalEncontrado.nombre} ${profesionalEncontrado.apellido}`: 'No asignado',
-                        nombreCategoria: categoriaEncontrada? `${categoriaEncontrada.nombre}` : 'No encontrada'};
+                        nombreCategoria: categoriaEncontrada? `${categoriaEncontrada.nombre}` : 'No encontrado'};
 
                     serviciosProcesados.push(servicioModificado);
                     });

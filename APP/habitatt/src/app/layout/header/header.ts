@@ -1,21 +1,19 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, computed,inject,output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
-type Role = 'CLIENTE' | 'ADMIN';
-interface MenuItem {
+import { MatDividerModule } from '@angular/material/divider'
+import { MatTooltipModule } from '@angular/material/tooltip'
+import { AuthService } from '../../../core/services/auth.service'
+import { Role } from '../../../core/models/role.model'
+export interface MenuItem {
   label: string;
   path: string;
   icon: string;
-  roles?: Role[];
-}
-interface User {
-  nombre: string;
-  role: Role;
-}
+  roles?: Role[]}
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -27,19 +25,44 @@ interface User {
     MatIconModule,
     MatMenuModule,
     MatBadgeModule,
+    MatBadgeModule,
+    MatDividerModule,
+    MatTooltipModule,
   ],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
-export class Header {
-  publicMenu = input.required<MenuItem[]>();
-  adminMaintenanceMenu = input.required<MenuItem[]>();
-  adminManagementMenu = input.required<MenuItem[]>();
-  currentUser = input<User | null>(null);
-  cartCount = input(0);
-  isAdmin = input(false);
-  canShowItem = input.required<(item: MenuItem) => boolean>();
-  loginClient = output<void>();
-  loginAdmin = output<void>();
-  logoutUser = output<void>();
+export class HeaderComponent {
+  private readonly authService = inject(AuthService)
+  readonly publicMenu = input<MenuItem[]>([])
+  readonly adminMaintenanceMenu = input<MenuItem[]>([])
+  readonly adminManagementMenu = input<MenuItem[]>([])
+  readonly cartCount = input(0)
+  readonly usuario = this.authService.usuario
+  readonly autenticado = this.authService.autenticado
+  readonly cargandoSesion = this.authService.cargandoSesion
+  readonly sesionInicializada = this.authService.sesionInicializada
+  readonly rol = this.authService.rol
+  readonly esAdmin = this.authService.esAdmin
+  readonly nombreRol = computed(() => {
+    const rol = this.rol()
+    if (rol === Role.ADMIN) {return 'Administrador'}
+    if (rol === Role.USER) {return 'Cliente'}
+    return 'Usuario'
+  })
+  readonly iniciales = computed(() => {
+    const nombre =this.usuario()?.nombre?.trim()
+    if (!nombre) {return 'US'}
+    return nombre.split(/\s+/).filter(Boolean).slice(0, 2).map((parte) =>parte.charAt(0).toUpperCase()).join('')
+  })
+  readonly publicMenuVisible = computed(() =>this.publicMenu().filter((item) =>this.puedeMostrar(item)))
+  readonly adminMaintenanceMenuVisible =computed(() =>this.adminMaintenanceMenu().filter((item) => this.puedeMostrar(item)))
+  readonly adminManagementMenuVisible =computed(() =>this.adminManagementMenu().filter((item) => this.puedeMostrar(item)))
+  readonly mostrarMenuMantenimientos =computed(() =>this.adminMaintenanceMenuVisible().length > 0)
+  readonly mostrarMenuGestion =computed(() =>this.adminManagementMenuVisible().length > 0)
+  puedeMostrar(item: MenuItem): boolean {
+    if (!item.roles?.length) {return true}
+    return this.authService.tieneRol(item.roles)
+  }
+  cerrarSesion(): void {this.authService.logout()}
 }

@@ -1,0 +1,91 @@
+<mat-card class="game-form-card">
+    <mat-card-content>
+        <form class="game-form" (submit)="$event.preventDefault(); submit()">
+            <section class="form-section">
+                <div class="form-grid">Datos de la cita:
+                    <mat-form-field appearance="outline">
+                    <mat-label>Cliente</mat-label>
+                    <mat-select [formField]="citaForm.clienteId">
+                        <mat-option [value]="0"> Seleccione el cliente </mat-option>
+                        @for (c of listaClientes(); track c.id) {
+                            <mat-option [value]="c.id"> {{ c.nombre }} {{ c.apellido }}</mat-option>
+                        }
+                    </mat-select>
+                        @if (citaForm.clienteId().touched() && citaForm.clienteId().invalid()) {
+                            <mat-error>Debe seleccionar un cliente de la lista</mat-error>
+                        }
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Especialidad</mat-label>
+                    <mat-select [(ngModel)]="especialidadId" [ngModelOptions]="{standalone: true}" (selectionChange)="especialidadTouched.set(true)">
+                        <mat-option [value]="0"> Seleccione una especialidad </mat-option>
+                        @for (es of listaEspecialidades(); track es.id) {
+                            <mat-option [value]="es.id"> {{ es.nombre }} </mat-option>
+                        }
+                    </mat-select>
+                    @if (especialidadTouched() && especialidadInvalida()) { <mat-error>Debe seleccionar una especialidad</mat-error> }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Profesional</mat-label>
+                    <mat-select [formField]="citaForm.profesionalId">
+                        <mat-option [value]="0"> Profesionales </mat-option>
+                        @for (p of profesionalesFiltrados(); track p.id) {
+                            <mat-option [value]="p.id"> {{ p.nombre }} {{ p.apellido }} </mat-option>
+                        }
+                    </mat-select>
+                    @if (citaForm.profesionalId().touched() && citaForm.profesionalId().invalid()) {
+                        <mat-error>El profesional es requerido</mat-error>
+                    }
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Descripción:</mat-label>
+                    <input matInput type="text" [formField]="citaForm.descripcion" />
+                    @if (citaForm.descripcion().touched() && citaForm.descripcion().invalid()) {
+                        <mat-error>{{ citaForm.descripcion().errors()[0].message }}</mat-error> }
+                </mat-form-field>
+                <div class="tiempo">
+                    <mat-form-field appearance="outline">
+                    <mat-label>Modalidad</mat-label>
+                    <mat-select [formField]="citaForm.modalidad">
+                        <mat-option value=""> Seleccione una modalidad </mat-option>
+                        @for (m of listaModalidades(); track m.value) {
+                            <mat-option [value]="m.value"> {{ m.label }} </mat-option>
+                        }
+                    </mat-select>
+                        @if (citaForm.modalidad().touched() && citaForm.modalidad().value() === "") {
+                            <mat-error>Debe seleccionar una modalidad de la lista</mat-error>
+                        }
+                </mat-form-field>
+                    <mat-form-field appearance="outline">
+                    <mat-label>Fecha:</mat-label>
+                    <input matInput type="date" [formField]="citaForm.fecha" />
+                    @if (citaForm.fecha().touched() && citaForm.fecha().invalid()) {
+                        <mat-error>{{ citaForm.fecha().errors()[0].message }}</mat-error> }
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Hora:</mat-label>
+                    <input matInput type="time" [formField]="citaForm.hora" />
+                    @if (citaForm.hora().touched() && citaForm.hora().invalid()) {
+                        <mat-error>{{ citaForm.hora().errors()[0].message }}</mat-error> }
+                </mat-form-field>
+                </div>
+                
+                </div>
+            </section>
+
+    <div class="form-actions">
+            <button mat-stroked-button color="accent" class="primary-icon-button" type="button"
+                (click)="cancelar.emit()"> <mat-icon>close</mat-icon> Cancelar </button>
+
+            <button mat-stroked-button type="submit" [color]="isEdit() ? 'accent' : 'primary'"
+                [class.edit-icon-button]="isEdit()" [class.create-icon-button]="!isEdit()"
+                [disabled]="isSubmitting()">
+                @if (isSubmitting()) { <mat-icon>hourglass_top</mat-icon> Guardando...
+                } @else { <mat-icon> {{ isEdit() ? 'edit' : 'add_circle' }}
+                </mat-icon> {{ isEdit() ? 'Actualizar' : 'Generar' }} }
+            </button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

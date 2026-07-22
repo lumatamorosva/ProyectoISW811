@@ -1,22 +1,14 @@
 import { inject } from '@angular/core'
-import {
-    HttpErrorResponse,
-    HttpInterceptorFn,
-} from '@angular/common/http'
+import { HttpErrorResponse,HttpInterceptorFn,} from '@angular/common/http'
 import { catchError, throwError } from 'rxjs'
 import { NotificationService } from '../services/notification.service'
 
 export const httpErrorInterceptor: HttpInterceptorFn = (request, next) => {
     const noti = inject(NotificationService)
-
     console.log('Request URL:', request.url)
-
-    return next(request).pipe(
-        catchError((error: HttpErrorResponse) => {
+    return next(request).pipe(catchError((error: HttpErrorResponse) => {
             let message = 'Se presentó un error inesperado'
-
-            if (error.error instanceof ErrorEvent) {
-                message = `Error del cliente: ${error.error.message}`
+            if (error.error instanceof ErrorEvent) {message = `Error del cliente: ${error.error.message}`
             } else {
                 switch (error.status) {
                     case 0:

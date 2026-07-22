@@ -40,3 +40,17 @@ export interface usuarioFormModel{
     role: string;
     foto: string;
 }
+
+//Para el login:
+export interface LoginRequest {
+    email: string;
+    password: string;
+}
+export interface LoginResult {
+    token: string;
+}
+export interface RegisterRequest {
+    nombre: string;
+    email: string;
+    password: string;
+}

@@ -20,6 +20,7 @@ import { profesional } from '../../../../core/models/profesional.model';
 import { StatusService } from '../../../../core/services/estado.service';
 import { Estado } from '../../../../core/models/estado.model';
 import { Cita } from '../../../../core/models/cita.model';
+import { forkJoin } from 'rxjs';
 
 
 @Component({
@@ -63,72 +64,53 @@ export class CitasAdminList {
   displayedColumns = [ 'cliente', 'fecha', 'hora', 'profesional', 'estado', 'acciones', ];
 
   ngOnInit(): void {
-    this.listarUsuarios();
-    this.listarServicios();
-    this.listarEstado();
-    this.listarProfesionales();
-    this.loadcitas();
-  }
-  listarEstado(): void {
-    this.statusService.listar().subscribe({
-      next: (response) => {
-        this.estados.set(response.data);
-      }
-    })
-  }
-  listarUsuarios(): void {
-    this.usuarioService.listar().subscribe({
-      next: (response) => {
-        this.usuariosLista.set(response.data);
-      }
-    })
-  }
-  listarServicios(): void {
-    this.servService.listar().subscribe({
-      next: (response) => {
-        this.serviciosLista.set(response.data);
-      }
-    })
-  }
-  listarProfesionales(): void {
-    this.profService.listar().subscribe({
-      next: (response) => {
-        this.profesionalesLista.set(response.data);
-      }
-    })
-  }
+  this.cargarTodoElSistema();
+}
 
-  loadcitas(): void {
+cargarTodoElSistema(): void {
   this.loading.set(true);
   this.error.set(null);
-  this.appoService.listar().subscribe({
-    next: (citaResponse) => {
-      const citasProcesados: any[] = [];
-      const listaCitasRaw = citaResponse.data;
-      const profesionales = this.profesionalesLista();
-      const servicios = this.serviciosLista();
-      const usuarios = this.usuariosLista();
-      if (!profesionales || !servicios || !usuarios) {
-        this.loading.set(false);
-        return;
-      }
-      listaCitasRaw.forEach((appoint: any) => {
+
+  forkJoin({
+    usuarios: this.usuarioService.listar(),
+    servicios: this.servService.listar(),
+    estados: this.statusService.listar(),
+    profesionales: this.profService.listar(),
+    citas: this.appoService.listar()
+  }).subscribe({
+    next: (resultado) => {
+      this.usuariosLista.set(resultado.usuarios.data);
+      this.serviciosLista.set(resultado.servicios.data);
+      this.estados.set(resultado.estados.data);
+      this.profesionalesLista.set(resultado.profesionales.data);
+
+      const listaCitasRaw = resultado.citas.data;
+      const profesionales = resultado.profesionales.data;
+      const servicios = resultado.servicios.data;
+      const usuarios = resultado.usuarios.data;
+
+      const citasProcesados = listaCitasRaw.map((appoint: any) => {
         const profesionalEncontrado = profesionales.find((p: any) => p.id === appoint.profesionalId);
         const servicioEncontrado = servicios.find((c: any) => c.id === appoint.servicioId);
         const usuarioEncontrado = usuarios.find((u: any) => u.id === appoint.clienteId);
-        const citaConDatosExtra = {...appoint,
-          nombreProfesional: profesionalEncontrado? `${profesionalEncontrado.nombre} ${profesionalEncontrado.apellido}`: 'No asignado',
-          nombreServicio: servicioEncontrado? `${servicioEncontrado.nombre}` : 'No encontrada',
-          nombreCliente: usuarioEncontrado? `${usuarioEncontrado.nombre} ${usuarioEncontrado.apellido}` : 'No encontrado'};
-        citasProcesados.push(citaConDatosExtra);
+
+        return {
+          ...appoint,
+          nombreProfesional: profesionalEncontrado ? `${profesionalEncontrado.nombre} ${profesionalEncontrado.apellido}` : 'No asignado',
+          nombreServicio: servicioEncontrado ? `${servicioEncontrado.nombre}` : 'No encontrada',
+          nombreCliente: usuarioEncontrado ? `${usuarioEncontrado.nombre} ${usuarioEncontrado.apellido}` : 'No encontrado'
+        };
       });
       this.citas.set(citasProcesados);
       this.loading.set(false);
-      console.log('Citas para la lista:', citasProcesados);
-    },error: () => {this.error.set('No se pudieron cargar los servicios.');
-    this.loading.set(false);
-    },});
-  }
+    },
+    error: (err) => {
+      console.error(err);
+      this.error.set('No se pudieron cargar los datos del sistema.');
+      this.loading.set(false);
+    }
+  });
+}
 
   Filtrados = computed(() => {
     const selectedEstado = this.estadoId();

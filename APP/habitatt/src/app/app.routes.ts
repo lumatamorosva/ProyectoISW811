@@ -17,6 +17,7 @@ import { ServiciosAdminCreate } from './pages/servicios/servicios-admin-create/s
 import { ProfesionalesAdminCreate } from './pages/profesionales/profesionales-admin-create/profesionales-admin-create';
 import { CitasAdminList } from './pages/citas/citas-admin-list/citas-admin-list';
 import { CitasAdminDetalles } from './pages/citas/citas-admin-detalles/citas-admin-detalles';
+import { CitasAdminCreate } from './pages/citas/citas-admin-create/citas-admin-create';
 
 export const routes: Routes = [
     {
@@ -37,6 +38,8 @@ export const routes: Routes = [
             { path: 'admin/categorias', component: CategoriasAdminList, title: 'Gestión de categorias'},
             { path: 'admin/citas', component: CitasAdminList, title: 'Gestión de citas'},
             { path: 'admin/citas/detalles/:id', component: CitasAdminDetalles, title: 'Detalles de cita' },
+            { path: 'citas/create', component: CitasAdminCreate, title: 'Crear una cita' },
+            { path: 'admin/citas/editar/:id', component:CitasAdminCreate, title: 'Editar una cita' },
             { path: 'admin/especialidades', component: EspecialidadesAdminList, title: 'Gestión de especialidades'},
             { path: 'admin/reportes', component: Dashboard, title: 'Reportes'},
             { path: 'admin/profesionales', component: ProfesionalesAdminList, title: 'Gestión de profesionales'},
