@@ -12,7 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import {RoleService} from '../../../../core/services/role.service'
-import { Role } from '../../../../core/models/role.model';
+import { Role, RoleOption } from '../../../../core/models/role.model';
 
 @Component({
   selector: 'app-usuarios-list',
@@ -42,7 +42,7 @@ export class UsuariosList {
   error = signal<string | null>(null);
   //Para filtro por rol
   rolId = signal<string | null>(null);
-  rolLista = signal<Role[]>([]);
+  rolLista = signal<RoleOption[]>([]);
 
   ngOnInit(): void {
     this.loadUsuarios();

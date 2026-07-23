@@ -10,7 +10,7 @@ import { Role } from '../models/role.model'
 @Injectable({ providedIn: 'root',}) export class AuthService {
     private readonly http = inject(HttpClient)
     private readonly router = inject(Router)
-    private readonly apiUrl = `${environment.apiUrl}/usuario`
+    private readonly apiUrl = `${environment.apiUrl}/usuarios`
     private readonly tokenKey = 'access_token'
     private readonly _token = signal<string | null>( this.leerTokenAlmacenado() )
     private readonly _usuario = signal<usuario | null>(null)
@@ -25,6 +25,8 @@ import { Role } from '../models/role.model'
     readonly rol = computed(() => this._usuario()?.role)
     readonly esAdmin = computed(() => { const rol = this.rol()
         return rol !== null && rol === Role.ADMIN })
+
+    constructor() { this.inicializarSesion().subscribe();}    
     login( credenciales: LoginRequest ): Observable<usuario> {
         this._cargandoSesion.set(true)
         return this.http.post<ApiResponse<LoginResult>>( `${this.apiUrl}/login`,credenciales)
@@ -48,11 +50,9 @@ import { Role } from '../models/role.model'
             )
     }
     obtenerPerfil(): Observable<usuario> {
-        return this.http
-            .get<ApiResponse<usuario>>(`${this.apiUrl}/perfil`)
+        return this.http.get<ApiResponse<usuario>>(`${this.apiUrl}/perfil`)
             .pipe(map((response) => {const usuario = response.data
-                    if (!usuario) {
-                        throw new Error('El API no devolvió la información del perfil')}
+                    if (!usuario) {throw new Error('El API no devolvió la información del perfil')}
                     return usuario
                 })
             )

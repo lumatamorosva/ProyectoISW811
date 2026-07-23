@@ -11,7 +11,7 @@
         <mat-label>Roles:</mat-label>
         <mat-select [(ngModel)]="rolId">
             <mat-option [value]="null">Todos los roles</mat-option>
-        @for (r of rolLista(); track r.value){
+        @for (r of rolLista(); track r.label){
             <mat-option [value]="r.label">
                 {{r.label}}
             </mat-option>

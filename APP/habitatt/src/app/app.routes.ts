@@ -18,6 +18,10 @@ import { ProfesionalesAdminCreate } from './pages/profesionales/profesionales-ad
 import { CitasAdminList } from './pages/citas/citas-admin-list/citas-admin-list';
 import { CitasAdminDetalles } from './pages/citas/citas-admin-detalles/citas-admin-detalles';
 import { CitasAdminCreate } from './pages/citas/citas-admin-create/citas-admin-create';
+import { authGuard} from '../core/guards/auth.guard';
+import { roleGuard } from '../core/guards/role.guard';
+import { Role } from '../core/models/role.model';
+import { Login } from './pages/usuarios/login/login';
 
 export const routes: Routes = [
     {
@@ -25,27 +29,28 @@ export const routes: Routes = [
         component: MainLayout,
         children: [
             {path: '', component:Home, title: 'Página de Inicio'},
+            {path: 'login', component: Login, title: 'Inicio de sesión'},
             {path: 'servicios', component:ServiciosList, title: 'Servicios disponibles'},
-            {path: 'servicios/:id', component:ServiciosDetail, title: 'Servicio Detalles'},
-            {path: 'citas', component:Citas, title: 'Gestión de citas'},
-            { path: 'admin/usuario-detail/:id', component: UserDetailPage, title: 'Gestión de usuario especifico' },
-            { path: 'admin/usuarios', component: UsuariosList, title: 'Gestión de usuarios' },
-            { path: 'admin/servicios', component: ServiciosAdminList, title: 'Gestión de servicios' },
-            { path: 'admin/servicios/create', component: ServiciosAdminCreate, title: 'Creación de nuevos servicios' },
-            { path: 'admin/servicios/editar/:id', component: ServiciosAdminEdit, title: 'Editar Servicio' },
-            { path: 'admin/profesionales/editar/:id', component: ProfesionalesAdminEdit, title: 'Editar Profesional' },
-            { path: 'admin/profesionales/create', component: ProfesionalesAdminCreate, title: 'Creación de nuevo profesional' },
-            { path: 'admin/categorias', component: CategoriasAdminList, title: 'Gestión de categorias'},
-            { path: 'admin/citas', component: CitasAdminList, title: 'Gestión de citas'},
-            { path: 'admin/citas/detalles/:id', component: CitasAdminDetalles, title: 'Detalles de cita' },
-            { path: 'citas/create', component: CitasAdminCreate, title: 'Crear una cita' },
-            { path: 'admin/citas/editar/:id', component:CitasAdminCreate, title: 'Editar una cita' },
+            {path: 'servicios/:id', component:ServiciosDetail, title: 'Servicio Detalles',canActivate: [authGuard]},
+            {path: 'citas', component:Citas, title: 'Gestión de citas', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] }},
+            { path: 'admin/usuario-detail/:id', component: UserDetailPage, title: 'Gestión de usuario especifico', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] }},
+            { path: 'admin/usuarios', component: UsuariosList, title: 'Gestión de usuarios', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] } },
+            { path: 'admin/servicios', component: ServiciosAdminList, title: 'Gestión de servicios', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] } },
+            { path: 'admin/servicios/create', component: ServiciosAdminCreate, title: 'Creación de nuevos servicios', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] }},
+            { path: 'admin/servicios/editar/:id', component: ServiciosAdminEdit, title: 'Editar Servicio', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] } },
+            { path: 'admin/profesionales/editar/:id', component: ProfesionalesAdminEdit, title: 'Editar Profesional', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] } },
+            { path: 'admin/profesionales/create', component: ProfesionalesAdminCreate, title: 'Creación de nuevo profesional' , canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] }},
+            { path: 'admin/categorias', component: CategoriasAdminList, title: 'Gestión de categorias', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] }},
+            { path: 'admin/citas', component: CitasAdminList, title: 'Gestión de citas', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] }},
+            { path: 'admin/citas/detalles/:id', component: CitasAdminDetalles, title: 'Detalles de cita', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] } },
+            { path: 'citas/create', component: CitasAdminCreate, title: 'Crear una cita',canActivate: [authGuard] },
+            { path: 'admin/citas/editar/:id', component:CitasAdminCreate, title: 'Editar una cita', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] } },
             { path: 'admin/especialidades', component: EspecialidadesAdminList, title: 'Gestión de especialidades'},
-            { path: 'admin/reportes', component: Dashboard, title: 'Reportes'},
-            { path: 'admin/profesionales', component: ProfesionalesAdminList, title: 'Gestión de profesionales'},
+            { path: 'admin/reportes', component: Dashboard, title: 'Reportes', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] }},
+            { path: 'admin/profesionales', component: ProfesionalesAdminList, title: 'Gestión de profesionales', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] }},
         ]
     },
     {
         path: '**', redirectTo: '',
-    }
+    },
 ];

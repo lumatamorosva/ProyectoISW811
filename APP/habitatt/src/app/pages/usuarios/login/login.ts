@@ -40,9 +40,7 @@ export class Login {
     required(path.email, { message: 'El correo es obligatorio.' });
     email(path.email, { message: 'Ingrese un correo válido.' });
     required(path.password, { message: 'La contraseña es obligatoria.' });
-    minLength(path.password, 6, {
-      message: 'La contraseña debe tener al menos 6 caracteres.',
-    });
+    minLength(path.password, 6, { message: 'La contraseña debe tener al menos 6 caracteres.'});
   });
 
   submit(): void {
