@@ -24,7 +24,7 @@
                 </div>
                 <div class="form-grid three-columns">
                     <mat-form-field appearance="outline">
-                        <mat-label>Precio</mat-label>
+                        <mat-label>Precio</mat-label><span matPrefix>₡&nbsp;</span>
                         <input matInput type="number" [formField]="serviceForm.precio" />
                         @if (serviceForm.precio().touched() && serviceForm.precio().invalid()) {
                         <mat-error>

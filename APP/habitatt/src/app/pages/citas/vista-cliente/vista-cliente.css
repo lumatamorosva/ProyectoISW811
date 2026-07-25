@@ -1,0 +1,60 @@
+.info {
+    border: 1px solid #ccc;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.detail-layout {
+    display: flex;
+    row-gap: 20px;
+    column-gap: 10px;
+}
+p {
+    font-size: 20px;
+        font-weight: bold;
+}
+span {
+    font-size: 20px;
+    font-color: #555;
+}
+.fecha-reagendar-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.datepicker-input-inline {
+  width: 0;
+  height: 0;
+  opacity: 0;
+  border: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.cancelada-preview {
+  color: #d32f2f; /* Rojo warn */
+  margin-top: 8px;
+}
+.descripcion-view-container,
+.descripcion-edit-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.descripcion-view-container p {
+  margin: 0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.acciones-edit {
+  display: flex;
+  gap: 4px;
+}

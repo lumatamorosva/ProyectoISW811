@@ -27,14 +27,13 @@
             </mat-option>
         }</mat-select>
     </mat-form-field>
-    <div>
-        <input [(ngModel)]="precioMinimo" aria-label="Precio mínimo">
-        <input [(ngModel)]="precioMaximo" aria-label="Precio máximo">
+    <div class="precio-range-div">
+        <div><span matPrefix>Min: ₡&nbsp;</span><input class="contenedor-inputs" [(ngModel)]="precioMinimo" aria-label="Precio mínimo"> </div>
+        <div><span matPrefix>Max: ₡&nbsp;</span><input class="contenedor-inputs" [(ngModel)]="precioMaximo" aria-label="Precio máximo"></div>
     </div>
-  
 </section>
 <div class="result-summary">
-    {{total()}} servicios encontrados.
+   {{totalServicios()}} servicios en en sistema | {{total()}} servicios con las características buscadas.
 </div>
 @if(loading()){
 <div class="state">
@@ -67,8 +66,7 @@
             </mat-card-content>
             <mat-card-actions class="card-acciones">
                 <a mat-stroked-button color="primary" [routerLink]="['/servicios',servicio.id]" class="view-icon-button">
-                    Detalles<mat-icon>more_horiz</mat-icon>
-                </a>
+                    Detalles<mat-icon>more_horiz</mat-icon></a>
                 <span [ngClass]="{'tag-activo': servicio.isActive, 'tag-inactivo': !servicio.isActive}">
                     {{ servicio.isActive ? 'Disponible' : 'Próximamente' }}
                 </span>

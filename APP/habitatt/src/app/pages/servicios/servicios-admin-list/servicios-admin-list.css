@@ -136,3 +136,14 @@ background-color: rgba(2, 71, 199, 0.5);
     color: #ef6c00;
     border: 1px solid #ffcc80;
 }
+
+.precio-range-div{
+    display: flex;
+    gap: 8px;
+    max-width: 300px !important;
+    flex-wrap: wrap;
+}
+.contenedor-inputs input {
+    flex: 1; 
+    width: 100%;
+}

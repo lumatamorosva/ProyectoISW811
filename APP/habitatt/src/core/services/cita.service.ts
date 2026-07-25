@@ -17,11 +17,15 @@ private readonly http = inject(HttpClient);
     return this.http.get<ApiResponse<Cita>>(`${this.apiUrl}/${id}`);
   }
 
+  getByClient(id: number) {
+    return this.http.get<ApiPaginatedResponse<Cita>>(`${this.apiUrl}/client/${id}`);
+  }
+
   crear(data: createCitaDto) {
     return this.http.post<ApiResponse<Cita>>(this.apiUrl, data);
   }
 
-  actualizar(id: number, data: updateCitaDto) {
+  actualizar(id: number, data: Partial<updateCitaDto>) {
     return this.http.put<ApiResponse<Cita>>(`${this.apiUrl}/${id}`, data);
   }
 }

@@ -31,9 +31,9 @@
             </mat-option>
         }</mat-select>
     </mat-form-field>
-    <div>
-        <input [(ngModel)]="precioMinimo" aria-label="Precio mínimo">
-        <input [(ngModel)]="precioMaximo" aria-label="Precio máximo">
+    <div class="precio-range-div">
+        <div><span matPrefix>Min: ₡&nbsp;</span><input [(ngModel)]="precioMinimo" aria-label="Precio mínimo"></div>
+        <div><span matPrefix>Max: ₡&nbsp;</span><input [(ngModel)]="precioMaximo" aria-label="Precio máximo"></div>
     </div>
 </section>
 

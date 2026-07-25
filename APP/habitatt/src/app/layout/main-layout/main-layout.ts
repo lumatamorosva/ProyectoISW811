@@ -14,8 +14,7 @@ import { roleGuard } from '../../../core/guards/role.guard';
 export class MainLayout {
   readonly publicMenu: MenuItem[] =[
     { label: 'Servicios', path: '/servicios', icon: 'square_foot' },
-    { label: 'Agendar nueva Cita', path: '/citas/create', icon: 'calendar_month' },
-    { label: 'Citas', path: '/citas', icon: 'receipt_long', roles: [Role.USER, Role.ADMIN] },
+    { label: 'Citas', path: '/citas', icon: 'receipt_long', roles: [Role.USER] },
   ];
   adminMaintenanceMenu: MenuItem[] =[
     { label: 'Servicios', path: '/admin/servicios', icon: 'construction',roles: [Role.ADMIN] },

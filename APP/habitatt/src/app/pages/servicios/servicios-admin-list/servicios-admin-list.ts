@@ -55,7 +55,7 @@ export class ServiciosAdminList {
     modss = signal <Modality[] | null>(null);
   
     precioMinimo = signal <number | null>(0);
-    precioMaximo = signal <number | null>(10000);
+    precioMaximo = signal <number | null>(100000);
 
   displayedColumns = [ 'nombre', 'prof', 'cat', 'precio', 'act', 'acciones', ];
 

@@ -22,11 +22,8 @@ import { MatDividerModule } from '@angular/material/divider';
 export class SinAutorizacion {
   private readonly location = inject(Location);
   private readonly router = inject(Router);
-
-  regresar(): void {
-    this.location.back();
-  }
+  
   irAlInicio(): void {
-    void this.router.navigate(['/inicio']);
+    void this.router.navigate(['']);
   }
 }

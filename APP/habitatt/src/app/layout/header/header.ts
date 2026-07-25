@@ -50,11 +50,6 @@ export class HeaderComponent {
     if (rol === Role.USER) {return 'Cliente'}
     return 'Usuario'
   })
-  readonly iniciales = computed(() => {
-    const nombre =this.usuario()?.nombre?.trim()
-    if (!nombre) {return 'US'}
-    return nombre.split(/\s+/).filter(Boolean).slice(0, 2).map((parte) =>parte.charAt(0).toUpperCase()).join('')
-  })
   readonly publicMenuVisible = computed(() =>this.publicMenu().filter((item) =>this.puedeMostrar(item)))
   readonly adminMaintenanceMenuVisible =computed(() =>this.adminMaintenanceMenu().filter((item) => this.puedeMostrar(item)))
   readonly adminManagementMenuVisible =computed(() =>this.adminManagementMenu().filter((item) => this.puedeMostrar(item)))

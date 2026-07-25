@@ -6,18 +6,20 @@ import { Servicio, ServicioUpdateDto, ServicioCreateDto, ServicioFormModel } fro
 import { categoria } from '../../../../core/models/categoria.model'
 import { ServiciosForm } from '../../../shared/components/servicios-form/servicios-form'
 import { ServicioService } from '../../../../core/services/servicio.service'
+import { NotificationService } from '../../../../core/services/notification.service'
 
 @Component({
-  selector: 'app-servicios-admin-edit',
-  imports: [ServiciosForm],
-  templateUrl: './servicios-admin-edit.html',
-  styleUrl: './servicios-admin-edit.css',
+    selector: 'app-servicios-admin-edit',
+    imports: [ServiciosForm],
+    templateUrl: './servicios-admin-edit.html',
+    styleUrl: './servicios-admin-edit.css',
 })
 export class ServiciosAdminEdit {
-  private readonly route = inject(ActivatedRoute)
-  private readonly router = inject(Router)
-  private readonly serviceService = inject(ServicioService)
-  private readonly categoriaService = inject(CategoriaService)
+    noti = inject(NotificationService)
+    private readonly route = inject(ActivatedRoute)
+    private readonly router = inject(Router)
+    private readonly serviceService = inject(ServicioService)
+    private readonly categoriaService = inject(CategoriaService)
 
     servicio = signal<Servicio | null>(null)
     categoria = signal<categoria | null>(null)
@@ -59,8 +61,10 @@ export class ServiciosAdminEdit {
         this.serviceService
             .actualizar(this.id, data as ServicioUpdateDto)
             .subscribe({
-                next: () => {  this.router.navigate(['/admin/servicios']) },
-                error: () => { this.error.set('No se pudo actualizar el servicio') },
+                next: () => {  this.noti.success('¡Cambios guardados exitosamente!', undefined, 5000);
+                                this.router.navigate(['/admin/servicios']) },
+                error: () => { this.noti.error('¡No se pudo actualizar el usuario!', undefined, 5000);
+                                this.error.set('No se pudo actualizar el servicio') },
                 complete: () => { this.saving.set(false) },
             })
     }

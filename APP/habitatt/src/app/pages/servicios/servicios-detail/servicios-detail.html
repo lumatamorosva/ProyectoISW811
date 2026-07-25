@@ -17,14 +17,14 @@
                 {{ serv.isActive ? 'Disponible' : 'Próximamente' }}
             </a><p></p>
             @if(serv.isActive){
-                <a mat-stroked-button color="primary" [routerLink]="['/citas/create']"
+                <a mat-stroked-button color="primary" [routerLink]="['/citas/create/', serv.id]"
                 class="view-icon-button"><mat-icon>receipt_long</mat-icon>Apartar una cita en este servicio</a><p></p>}
             }
         <h1>{{ serv.nombre }}</h1>
         <h2>{{ serv.descripcion }}</h2>
         <p>Categoría: {{ nombreCategoria() }}</p>
         <p>Tiempo estimado: {{ serv.duracionMinutoss }} minutos</p>
-        <p>Precio inicial: ₡ {{ serv.precio }}</p><p></p>
+        <p>Precio inicial: {{ serv.precio | currency:'₡':'symbol':'1.0-0'}}</p><p></p>
         <h2 >Encargado:  {{ nombreProfesional() }}</h2>
         <p>Modalidad: {{serv.modality}}</p>
     </section>

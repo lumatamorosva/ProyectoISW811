@@ -1,0 +1,15 @@
+<section class="page-container">
+    <header class="page-header"> <h1>Ver o modificar perfil</h1></header>
+
+    @if (loading()) {
+        <p>Cargando su información...</p>
+    } @else {
+        @if (error()) {<p class="error-message">{{ error() }}</p>}
+            <app-users-form
+                [userActual]="usuario()"
+                [saving]="saving()"
+                (guardar)="guardar($event)"
+                (cancelar)="cancelar()"
+            />
+    }
+</section>

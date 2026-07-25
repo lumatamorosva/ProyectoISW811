@@ -122,3 +122,14 @@
     display: flex;
     gap: 8px;
 }
+
+.precio-range-div{
+    display: flex;
+    gap: 8px;
+    max-width: 300px !important;
+    flex-wrap: wrap;
+}
+.contenedor-inputs input {
+    flex: 1; 
+    width: 100%;
+}

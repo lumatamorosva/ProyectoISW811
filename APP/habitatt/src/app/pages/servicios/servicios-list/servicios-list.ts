@@ -54,7 +54,7 @@ export class ServiciosList {
   modss = signal <Modality[] | null>(null);
 
   precioMinimo = signal <number | null>(0);
-  precioMaximo = signal <number | null>(10000);
+  precioMaximo = signal <number | null>(100000);
   
   ngOnInit(): void {
     this.listarCategorias();
@@ -108,10 +108,9 @@ export class ServiciosList {
 
                     serviciosProcesados.push(servicioModificado);
                     });
-
                       this.servicios.set(serviciosProcesados);
                       this.loading.set(false);
-                      console.log('Servicios con profesionales cargados:', serviciosProcesados);
+                      console.log('Servicios encontrados:', serviciosProcesados);
                 },
                   error: () => {this.error.set('No se pudieron cargar los servicios.');
                   this.loading.set(false);
@@ -138,5 +137,5 @@ export class ServiciosList {
   })
 
   total = computed(() => this.Filtrados().length);
-
+  totalServicios = computed(() => this.servicios().length);
 }

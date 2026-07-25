@@ -6,8 +6,11 @@ import { environment } from '../../environments/environment.development'
 import { ApiResponse } from '../models/api-response.model'
 import { LoginRequest, LoginResult, RegisterRequest, usuario, } from '../models/usuario.model'
 import { Role } from '../models/role.model'
+import { NotificationService } from '../services/notification.service'
 
-@Injectable({ providedIn: 'root',}) export class AuthService {
+@Injectable({ providedIn: 'root',}) 
+export class AuthService {
+    noti = inject(NotificationService)
     private readonly http = inject(HttpClient)
     private readonly router = inject(Router)
     private readonly apiUrl = `${environment.apiUrl}/usuarios`
@@ -41,6 +44,7 @@ import { Role } from '../models/role.model'
                 tap((usuario) => {
                     this._usuario.set(usuario)
                     this._sesionInicializada.set(true)
+                    this.noti.success('¡Sesión iniciada exitosamente!', undefined, 5000);
                 }),
                 catchError((error: unknown) => {this.limpiarSesion()
                     return throwError(() => this.obtenerErrorAutenticacion(error))
@@ -78,7 +82,9 @@ import { Role } from '../models/role.model'
         this._cargandoSesion.set(true)
         this.solicitudPerfilActual =this.obtenerPerfil().pipe(tap((usuario) => {this._usuario.set(usuario)}),
                 map((usuario): usuario | null =>usuario),
-                catchError(() => {this.limpiarSesion()
+                catchError((error: unknown) => {
+                    if(error instanceof HttpErrorResponse && error.status === 401){this.limpiarSesion()}
+                    else{ this._cargandoSesion.set(false) }
                     return of(null)
                 }),
                 finalize(() => {
@@ -100,7 +106,8 @@ import { Role } from '../models/role.model'
     }
     logout(redirigir = true): void {
         this.limpiarSesion()
-        if (redirigir) {void this.router.navigate(['/login'])}
+        this.noti.success('¡Sesión cerrada exitosamente!', undefined, 5000);
+        if (redirigir) {void this.router.navigate([''])}
     }
     tieneRol(rolesPermitidos: Role[]): boolean {
         const rolActual = this.rol() as Role
@@ -109,8 +116,7 @@ import { Role } from '../models/role.model'
     obtenerToken(): string | null { return this._token()}
     private guardarToken(token: string): void {
         const tokenLimpio = token.trim()
-        if (!tokenLimpio) {throw new Error('El token recibido no es válido')
-        }
+        if (!tokenLimpio) {throw new Error('El token recibido no es válido')}
         localStorage.setItem(this.tokenKey,tokenLimpio)
         this._token.set(tokenLimpio)
     }

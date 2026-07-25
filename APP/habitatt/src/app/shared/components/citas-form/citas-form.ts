@@ -12,21 +12,22 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { effect } from '@angular/core'
 import { Cita, citaFormModel, createCitaDto, updateCitaDto } from '../../../../core/models/cita.model';
 import { ProfesionalService } from '../../../../core/services/profesional.service';
-import { usuario } from '../../../../core/models/usuario.model';
 import { Servicio } from '../../../../core/models/servicio.model';
 import { profesional } from '../../../../core/models/profesional.model';
 import { Estado } from '../../../../core/models/estado.model';
 import { especialidad } from '../../../../core/models/especialidad.model';
 import { EspecialidadService } from '../../../../core/services/especialidad.service';
 import { FormsModule } from '@angular/forms';
-import { UsuarioService } from '../../../../core/services/usuario.service';
 import { ModalityService } from '../../../../core/services/modality.service';
 import { Modality } from '../../../../core/models/modality.model';
 import { A11yModule } from "@angular/cdk/a11y";
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ServicioService } from '../../../../core/services/servicio.service';
+import { AuthService } from '../../../../core/services/auth.service'
 
 @Component({
   selector: 'app-citas-form',
-  imports: [CommonModule,
+  imports: [CommonModule,RouterLink,
     FormField,
     MatCardModule,
     MatFormFieldModule,
@@ -42,8 +43,10 @@ import { A11yModule } from "@angular/cdk/a11y";
 export class CitasForm {
   private readonly profService = inject(ProfesionalService);
   private readonly especialS = inject(EspecialidadService);
-  private readonly clientsService = inject(UsuarioService);
   private readonly modService = inject(ModalityService);
+  private readonly servService = inject(ServicioService);
+  private readonly route = inject(ActivatedRoute);
+  readonly authService = inject(AuthService);
 
   citas = signal<Cita[]>([]);
 
@@ -53,7 +56,6 @@ export class CitasForm {
   guardar = output<createCitaDto | updateCitaDto>();
   cancelar = output<void>();
 
-  usuario = signal<usuario | null> (null);
   servicio = signal<Servicio | null>(null);
   profesional = signal<profesional | null>(null);
   estado = signal<Estado | null>(null);
@@ -62,7 +64,6 @@ export class CitasForm {
   especialidadId = signal<number | null>(null);
   listaEspecialidades = signal<especialidad[] | null>(null);
   listaProfesionales = signal<profesional[] | null>(null);
-  listaClientes = signal<usuario[] | null>(null);
   listaModalidades = signal<Modality[] | null>(null);
 
   citaModel = signal<citaFormModel>({
@@ -80,8 +81,6 @@ export class CitasForm {
   });
 
 citaForm = form(this.citaModel, (path) => {
-    required(path.clienteId, { message: 'Debe Seleccionar un cliente de la lista' })
-    min(path.clienteId, 1, { message: 'Debe Seleccionar un cliente de la lista' })
     required(path.profesionalId, { message: 'El profesional debe ser seleccionado de la lista' })
     min(path.profesionalId, 1, { message: 'El profesional debe ser seleccionado de la lista' })
     required(path.fecha, { message: 'La fecha debe es necesaria' })
@@ -102,9 +101,10 @@ especialidadTouched = signal(false);
   isSubmitting = computed(() => this.saving())
 
 constructor() {
+  const idServicio = Number(this.route.snapshot.paramMap.get('id'));
+  this.cargarServicio(idServicio);
   this.cargarEspecialidades();
   this.cargarTodosLosProfesionales();
-  this.cargarTodosLosClientes();
   this.cargarModalidades();
 
     
@@ -187,21 +187,15 @@ private buildDto(): createCitaDto | updateCitaDto {
       descripcion: value.descripcion.trim(),
       modalidad: value.modalidad.trim(),
       status: 'PENDING',
-      clienteId: Number(value.clienteId),
+      clienteId: Number(this.authService.usuario()?.id || 1),
       profesionalId: Number(value.profesionalId),
-      servicioId: Number(1),
+      servicioId: this.servicio()?.id || 1,
     }
   }
 
   private cargarModalidades(): void {
     this.modService.listar().subscribe({
       next: (response) => this.listaModalidades.set(response.data || [])
-    });
-  }
-
-  private cargarTodosLosClientes(): void {
-    this.clientsService.listar().subscribe({
-      next: (response) => this.listaClientes.set(response.data || [])
     });
   }
 
@@ -215,6 +209,12 @@ private buildDto(): createCitaDto | updateCitaDto {
   private cargarTodosLosProfesionales(): void {
     this.profService.listar().subscribe({
       next: (response) => this.listaProfesionales.set(response.data || [])
+    });
+  }
+
+  private cargarServicio(id: number): void {
+    this.servService.obtenerPorId(id).subscribe({
+      next: (response) => this.servicio.set(response.data || null)
     });
   }
 

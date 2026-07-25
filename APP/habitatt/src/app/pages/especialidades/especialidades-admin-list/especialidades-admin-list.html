@@ -54,7 +54,7 @@
             <ng-container matColumnDef="precio">
             <th mat-header-cell *matHeaderCellDef>Precio por hora</th>
             <td mat-cell *matCellDef="let spc">
-                <small>{{ spc.precio }}</small>
+                <small>{{ spc.precio | currency:'₡':'symbol':'1.0-0'}}</small>
             </td>
             </ng-container>
             <ng-container matColumnDef="activa">

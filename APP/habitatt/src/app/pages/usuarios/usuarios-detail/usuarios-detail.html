@@ -16,23 +16,19 @@
     </mat-card>
 
     <section class="info"> 
-        @if (user && user.id) {
-            <a mat-stroked-button [ngClass]="{'btn-activo': user.isActive, 'btn-inactivo': !user.isActive}">
-                {{ user.isActive ? 'Habilitado' : 'Deshabilitado' }}
-            </a><p></p>
-        <a mat-stroked-button color="primary" [routerLink]="['/admin', 'usuario-detail', user.id]"
-            class="view-icon-button">Ver ordenes del usuario<mat-icon>receipt_long</mat-icon></a><p></p>}
+        <a mat-stroked-button [ngClass]="{'btn-activo': user.isActive, 'btn-inactivo': !user.isActive}">
+                {{ user.isActive ? 'Habilitado' : 'Deshabilitado' }}</a><p></p>
+        <a mat-stroked-button routerLink="/admin/editUser/{{ user.id }}">Editar usuario</a><p></p>
         <h1>{{ user.nombre }}</h1>
         <h1>{{ user.apellido }}</h1>
         <h2>Datos del usuario:</h2>
-        <p>{{ user.email }}</p>
-        <p>{{ user.telefono }}</p>
+        <span> Correo: </span> <p><strong>{{ user.email }}</strong></p>
+        <span> Teléfono: </span> <p><strong>{{ user.telefono }}</strong></p>
         
         <span >Rol:  {{ user.role }}</span>
     </section>
 </section>
 }
 <a mat-button routerLink="/admin/usuarios">
-    <mat-icon routerLink="/admin/usuarios">arrow_back</mat-icon>
-    Volver a la lista de usuarios
+    <mat-icon routerLink="/admin/usuarios">arrow_back</mat-icon> Volver a la lista de usuarios
 </a>

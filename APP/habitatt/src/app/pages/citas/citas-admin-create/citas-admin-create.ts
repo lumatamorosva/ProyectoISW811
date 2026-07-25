@@ -1,11 +1,9 @@
 import { Component, inject, signal } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
-import { ProfesionalService } from '../../../../core/services/profesional.service';
-import { ProfesionaCreateDto, profesional, ProfesionalUpdateDto } from '../../../../core/models/profesional.model';
-import { ProfesionalesForm } from '../../../shared/components/profesionales-form/profesionales-form';
 import { CitasForm } from '../../../shared/components/citas-form/citas-form';
 import { Cita, createCitaDto, updateCitaDto } from '../../../../core/models/cita.model';
 import { CitasService } from '../../../../core/services/cita.service';
+import { NotificationService } from '../../../../core/services/notification.service'
 
 @Component({
   selector: 'app-citas-admin-create',
@@ -14,7 +12,7 @@ import { CitasService } from '../../../../core/services/cita.service';
   styleUrl: './citas-admin-create.css',
 })
 export class CitasAdminCreate {
-  private readonly route = inject(ActivatedRoute)
+    noti = inject(NotificationService)
   private readonly router = inject(Router)
   private readonly citaService = inject(CitasService)
 
@@ -42,8 +40,10 @@ export class CitasAdminCreate {
         this.error.set(null)
         console.log("Data: ", data)
         this.citaService.crear(data as createCitaDto).subscribe({
-                next: () => {  this.router.navigate(['/admin/citas']) },
-                error: () => { this.error.set('No se pudo crear la cita') },
+                next: () => {  this.noti.success('¡Cita creada exitosamente!', undefined, 5000);
+                                this.router.navigate(['/citas']) },
+                error: () => { this.noti.error('¡No se pudo crear la cita!', undefined, 5000);
+                                    this.error.set('No se pudo crear la cita') },
                 complete: () => { this.saving.set(false) },
             })
     } cancelar() {  this.router.navigate(['/admin/citas']) }}

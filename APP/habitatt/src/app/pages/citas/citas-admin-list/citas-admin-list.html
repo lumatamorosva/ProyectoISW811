@@ -18,10 +18,9 @@
             <mat-option [value]="p.id"> {{p.nombre}} {{p.apellido}} </mat-option>
         }</mat-select>
     </mat-form-field>
-    <div>
-        <p>Filtrar por fecha:</p>
-        <input type="date" [(ngModel)]="fecha1" aria-label="Fecha inicio">
-        <input type="date" [(ngModel)]="fecha2" aria-label="Fecha final">
+    <div class="precio-range-div">
+        <div><span matPrefix>Inicio: ₡&nbsp;</span><input type="date" [(ngModel)]="fecha1" aria-label="Fecha inicio"></div>
+        <div><span matPrefix>Final :  ₡&nbsp;</span><input type="date" [(ngModel)]="fecha2" aria-label="Fecha final"></div>
     </div>
 </section>
 
