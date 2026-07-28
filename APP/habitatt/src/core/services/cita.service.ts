@@ -21,6 +21,10 @@ private readonly http = inject(HttpClient);
     return this.http.get<ApiPaginatedResponse<Cita>>(`${this.apiUrl}/client/${id}`);
   }
 
+  getByProfessional(id: number) {
+    return this.http.get<ApiPaginatedResponse<Cita>>(`${this.apiUrl}/profesional/${id}`);
+  }
+
   crear(data: createCitaDto) {
     return this.http.post<ApiResponse<Cita>>(this.apiUrl, data);
   }

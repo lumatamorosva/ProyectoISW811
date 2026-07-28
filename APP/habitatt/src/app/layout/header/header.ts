@@ -1,4 +1,4 @@
-import { Component, input, computed,inject,output } from '@angular/core';
+import { Component, input, computed,inject,output, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,7 +8,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider'
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { AuthService } from '../../../core/services/auth.service'
-import { Role } from '../../../core/models/role.model'
+import { Role, ROLE_OPTIONS} from '../../../core/models/role.model'
 export interface MenuItem {
   label: string;
   path: string;
@@ -45,11 +45,10 @@ export class HeaderComponent {
   readonly rol = this.authService.rol
   readonly esAdmin = this.authService.esAdmin
   readonly nombreRol = computed(() => {
-    const rol = this.rol()
-    if (rol === Role.ADMIN) {return 'Administrador'}
-    if (rol === Role.USER) {return 'Cliente'}
-    return 'Usuario'
-  })
+  const rol = this.rol();
+  if (!rol) return 'Usuario';
+ return ROLE_OPTIONS[rol as Role]?.label ?? 'Usuario';
+});
   readonly publicMenuVisible = computed(() =>this.publicMenu().filter((item) =>this.puedeMostrar(item)))
   readonly adminMaintenanceMenuVisible =computed(() =>this.adminMaintenanceMenu().filter((item) => this.puedeMostrar(item)))
   readonly adminManagementMenuVisible =computed(() =>this.adminManagementMenu().filter((item) => this.puedeMostrar(item)))

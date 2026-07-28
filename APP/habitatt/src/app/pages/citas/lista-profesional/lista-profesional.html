@@ -1,11 +1,9 @@
 <section class="page-header"><p></p>
-    <h1 >Administración de Citas</h1>
-    <div class="ContBoton" >
-        <button class="download-icon-button" (click)="descargarExcel()"> <mat-icon>table_view</mat-icon>Descargar Reporte</button>
-    </div>
+    <h1 >Citas</h1>
 </section>
 <section class="filters">
-    <mat-form-field>
+    <div>
+        <mat-form-field>
         <mat-label>Estado:</mat-label>
         <mat-select [(ngModel)]="estadoId">
             <mat-option [value]="null">Todos</mat-option>
@@ -13,17 +11,11 @@
             <mat-option [value]="e.value"> {{e.label}}</mat-option>
         }</mat-select>
     </mat-form-field>
-    <mat-form-field>
-        <mat-label>Profesional:</mat-label>
-        <mat-select [(ngModel)]="profId">
-            <mat-option [value]="null">Todos</mat-option>
-        @for (p of profesionalesLista(); track p.id){
-            <mat-option [value]="p.id"> {{p.nombre}} {{p.apellido}} </mat-option>
-        }</mat-select>
-    </mat-form-field>
-    <div class="precio-range-div">
-        <div><span matPrefix>Inicio: ₡&nbsp;</span><input type="date" [(ngModel)]="fecha1" aria-label="Fecha inicio"></div>
-        <div><span matPrefix>Final :  ₡&nbsp;</span><input type="date" [(ngModel)]="fecha2" aria-label="Fecha final"></div>
+    </div>
+    <div>
+        <p>Filtrar por fecha:</p>
+        <input type="date" [(ngModel)]="fecha1" aria-label="Fecha inicio">
+        <input type="date" [(ngModel)]="fecha2" aria-label="Fecha final">
     </div>
 </section>
 
@@ -45,12 +37,6 @@
 <div class="result-summary">  {{total()}} citas encontradas: </div>
     <div class="table-wrapper">
         <table mat-table [dataSource]="Filtrados()" class="admin-table">
-            <ng-container matColumnDef="cliente">
-            <th mat-header-cell *matHeaderCellDef>Cliente</th>
-            <td mat-cell *matCellDef="let cita">
-                <strong>{{ cita.nombreCliente }}</strong>
-            </td>
-            </ng-container>
             <ng-container matColumnDef="fecha">
             <th mat-header-cell *matHeaderCellDef>Fecha:</th>
             <td mat-cell *matCellDef="let cita">
@@ -62,10 +48,15 @@
             <td mat-cell *matCellDef="let cita">
                 <small>{{ cita.hora }}</small>
             </td></ng-container>
-            <ng-container matColumnDef="profesional">
-            <th mat-header-cell *matHeaderCellDef>Profesional</th>
+            <ng-container matColumnDef="cliente">
+            <th mat-header-cell *matHeaderCellDef>Cliente</th>
             <td mat-cell *matCellDef="let cita">
-                <small>{{ cita.nombreProfesional }}</small>
+                <small>{{ cita.nombreCliente }}</small>
+            </td></ng-container>
+            <ng-container matColumnDef="servicio">
+            <th mat-header-cell *matHeaderCellDef>Servicio</th>
+            <td mat-cell *matCellDef="let cita">
+                <small>{{ cita.nombreServicio }}</small>
             </td></ng-container>
             <ng-container matColumnDef="estado">
             <th mat-header-cell *matHeaderCellDef>Estado</th>
@@ -73,10 +64,10 @@
                 <small>{{ cita.status }}</small>
             </td></ng-container>
             <ng-container matColumnDef="acciones">
-            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <th mat-header-cell *matHeaderCellDef>Detalles</th>
             <td mat-cell *matCellDef="let cita">
                 <a mat-stroked-button color="accent" class="edit-icon-button"
-                    [routerLink]="['/admin/citas/detalles', cita.id]">Detalles<mat-icon>edit</mat-icon>
+                    [routerLink]="['/citaDetalle', cita.id]">Detalles<mat-icon>edit</mat-icon>
                 </a>
             </td>
             </ng-container>
@@ -84,3 +75,4 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table></div>
 </section>
+

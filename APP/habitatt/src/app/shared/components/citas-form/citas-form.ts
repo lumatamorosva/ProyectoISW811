@@ -24,6 +24,9 @@ import { A11yModule } from "@angular/cdk/a11y";
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ServicioService } from '../../../../core/services/servicio.service';
 import { AuthService } from '../../../../core/services/auth.service'
+import { CitasService } from '../../../../core/services/cita.service';
+import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-citas-form',
@@ -36,7 +39,11 @@ import { AuthService } from '../../../../core/services/auth.service'
     MatIconModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatProgressSpinnerModule, FormsModule, A11yModule],
+    MatProgressSpinnerModule, 
+    FormsModule, 
+    A11yModule, 
+    MatDatepickerModule, 
+    MatNativeDateModule],
   templateUrl: './citas-form.html',
   styleUrl: './citas-form.css',
 })
@@ -45,6 +52,7 @@ export class CitasForm {
   private readonly especialS = inject(EspecialidadService);
   private readonly modService = inject(ModalityService);
   private readonly servService = inject(ServicioService);
+  private readonly appoService = inject(CitasService);
   private readonly route = inject(ActivatedRoute);
   readonly authService = inject(AuthService);
 
@@ -66,11 +74,54 @@ export class CitasForm {
   listaProfesionales = signal<profesional[] | null>(null);
   listaModalidades = signal<Modality[] | null>(null);
 
+  bloquesHorarios = ['08:00', '09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00'];
+  todasLasCitasDelProfesional = signal<Cita[]>([]);
+  cargandoHorarios = signal(false);
+  horasOcupadas = computed(() => {
+    const citas = this.todasLasCitasDelProfesional();
+    const fechaSeleccionada = this.citaModel().fecha;
+    if (!fechaSeleccionada || citas.length === 0) return [];
+    const fechaStrTarget = new Date(fechaSeleccionada).toISOString().split('T')[0];
+    return citas.filter(cita => {
+      const fechaCitaStr = new Date(cita.fecha).toISOString().split('T')[0];
+      return fechaCitaStr === fechaStrTarget;
+    }).map(cita => {if (typeof cita.hora === 'string' && cita.hora.includes(':')) {return cita.hora.slice(0, 5);}
+      const dateObj = new Date(cita.fecha);
+      const h = dateObj.getHours().toString().padStart(2, '0');
+      const m = dateObj.getMinutes().toString().padStart(2, '0');
+      return `${h}:${m}`;
+    });
+  })
+  onProfesionalChange(): void {const profId = this.citaModel().profesionalId;
+  if (profId > 0) {
+    this.cargandoHorarios.set(true);
+    this.appoService.getByProfessional(profId).subscribe({
+      next: (response) => {
+        this.todasLasCitasDelProfesional.set(response.data);
+        this.cargandoHorarios.set(false);
+      },
+      error: (err) => {
+        console.error(err);
+        this.todasLasCitasDelProfesional.set([]);
+        this.cargandoHorarios.set(false);
+      }
+    });
+  } else {
+    this.todasLasCitasDelProfesional.set([]);
+  }
+}
+seleccionarHora(hora: string): void {
+  if (this.horasOcupadas().includes(hora)) return; 
+  this.citaModel.update(m => ({ ...m, hora }));
+  this.citaForm.hora().markAsTouched();
+}
+ 
   citaModel = signal<citaFormModel>({
     fecha: new Date(),
     hora: '',
     modalidad: '',
     descripcion: '',
+    cobro: 0,
     status: '',
     clienteId: 0,
     profesionalId: 0,
@@ -120,6 +171,7 @@ constructor() {
         hora: cita.hora ?? '',
         modalidad: cita.modalidad ?? '',
         descripcion: cita.descripcion ?? '',
+        cobro: cita.cobro ?? 0,
         profesionalId: cita.profesionalId ?? 0,
         status: cita.status ?? '',
         clienteId: cita.clienteId,
@@ -140,6 +192,7 @@ private resetForm() {
     clienteId: 0,
     profesionalId: 0,
     servicioId: 0,
+    cobro: 0,
 
     nombreCliente: '',
     nombreProfesional: '',
@@ -186,6 +239,7 @@ private buildDto(): createCitaDto | updateCitaDto {
       hora: value.hora.trim(),
       descripcion: value.descripcion.trim(),
       modalidad: value.modalidad.trim(),
+      cobro: Number(this.servicio()?.precio || 0),
       status: 'PENDING',
       clienteId: Number(this.authService.usuario()?.id || 1),
       profesionalId: Number(value.profesionalId),

@@ -1,5 +1,4 @@
 .page-header {
-    display: flex;
     margin-bottom: 1.5rem;
 
     .eyebrow {
@@ -136,27 +135,4 @@ background-color: rgba(2, 71, 199, 0.5);
     background-color: #ffe0b2; 
     color: #ef6c00;
     border: 1px solid #ffcc80;
-}
-
-.precio-range-div{
-    display: flex;
-    gap: 8px;
-    max-width: 300px !important;
-    flex-wrap: wrap;
-}
-
-.ContBoton {
-    margin-left: auto;
-}
-
-.download-icon-button {
-    display: flex;
-    padding: 10%;
-    font-size: medium;
-    border-radius: 100px;
-    color:#2e7d32;
-    font-weight: bold;
-    text-wrap: nowrap;
-    align-items: center;
-    gap: 8px;
 }

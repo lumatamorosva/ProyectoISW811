@@ -21,7 +21,7 @@ import { StatusService } from '../../../../core/services/estado.service';
 import { Estado } from '../../../../core/models/estado.model';
 import { Cita } from '../../../../core/models/cita.model';
 import { forkJoin } from 'rxjs';
-
+import { ExcelService } from '../../../../core/services/excel.service';
 
 @Component({
   selector: 'app-citas-admin-list',
@@ -40,6 +40,7 @@ import { forkJoin } from 'rxjs';
   styleUrl: './citas-admin-list.css',
 })
 export class CitasAdminList {
+  private excelService = inject(ExcelService);
   private readonly appoService = inject(CitasService);
   private readonly servService = inject(ServicioService);
   private readonly usuarioService = inject(UsuarioService);
@@ -127,6 +128,22 @@ cargarTodoElSistema(): void {
       return coincideEstado && coincideProf && coincideRango;
     });
   })
-
   total = computed(() => this.Filtrados().length);
+
+  descargarExcel(){
+    const citasFiltradas = this.Filtrados();
+    const datos = citasFiltradas.map((cita) => (
+      {id:cita.id,
+        nombreProfesional: cita.nombreProfesional,
+        nombreServicio: cita.nombreServicio, 
+        nombreCliente: cita.nombreCliente, 
+        modalidad: cita.modalidad, 
+        fecha: new Date(cita.fecha).toISOString().split('T')[0], 
+        hora: cita.hora, 
+        descripcion: cita.descripcion, 
+        monto: Number(cita.cobro)
+      }
+    ));
+    this.excelService.generateExcelReport(datos, 'ReporteCitas');
+  }
 }

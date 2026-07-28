@@ -5,6 +5,7 @@ export interface Cita{
     descripcion: string;
     status: string;
     modalidad: string;
+    cobro: number;
 
     clienteId: number;
     profesionalId: number;
@@ -21,6 +22,7 @@ export interface createCitaDto{
     descripcion: string;
     status: string;
     modalidad: string;
+    cobro: number;
 
     clienteId: number;
     profesionalId: number;
@@ -32,6 +34,7 @@ export interface updateCitaDto{
     descripcion: string;
     status: string;
     modalidad: string;
+    cobro: number;
 
     clienteId: number;
     profesionalId: number;
@@ -43,6 +46,7 @@ export interface citaFormModel{
     descripcion: string;
     status: string;
     modalidad: string;
+    cobro: number;
 
     clienteId: number;
     profesionalId: number;

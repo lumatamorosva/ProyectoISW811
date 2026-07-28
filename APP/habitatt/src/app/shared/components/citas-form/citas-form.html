@@ -43,33 +43,54 @@
                     </mat-form-field>
                 </section>
                 <section class="form-section2">
+                    
                     <div>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Modalidad</mat-label>
-                                <mat-select [formField]="citaForm.modalidad" >
-                                    <mat-option value=""> Seleccione una modalidad </mat-option>
-                                    @for (m of listaModalidades(); track m.value) {
-                                        <mat-option [value]="m.value"> {{ m.label }} </mat-option>}
-                                </mat-select>
-                                @if (citaForm.modalidad().touched() && citaForm.modalidad().value() === "") {
-                                    <mat-error>Debe seleccionar una modalidad de la lista</mat-error>}
-                        </mat-form-field>
-                    </div>
-                    <div>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Fecha:</mat-label>
-                            <input matInput type="date" [formField]="citaForm.fecha" />
-                            @if (citaForm.fecha().touched() && citaForm.fecha().invalid()) {
-                                <mat-error>{{ citaForm.fecha().errors()[0].message }}</mat-error> }
-                        </mat-form-field>
-                    </div>
-                    <div>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Hora:</mat-label>
-                            <input matInput type="time" [formField]="citaForm.hora" />
-                            @if (citaForm.hora().touched() && citaForm.hora().invalid()) {
-                                <mat-error>{{ citaForm.hora().errors()[0].message }}</mat-error> }
-                        </mat-form-field>
+                        @if(citaModel().profesionalId !== 0){
+                            <div>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Modalidad</mat-label>
+                                        <mat-select [formField]="citaForm.modalidad" >
+                                            <mat-option value=""> Seleccione una modalidad </mat-option>
+                                            @for (m of listaModalidades(); track m.value) {
+                                                <mat-option [value]="m.value"> {{ m.label }} </mat-option>}
+                                        </mat-select>
+                                        @if (citaForm.modalidad().touched() && citaForm.modalidad().value() === "") {
+                                            <mat-error>Debe seleccionar una modalidad de la lista</mat-error>}
+                                </mat-form-field>
+                            </div>
+                            <section class="form-section2">
+                            <div class="agenda-picker-container">
+                                <mat-form-field appearance="outline" class="full-width"> <mat-label>Seleccione la Fecha</mat-label>
+                                <input matInput [matDatepicker]="picker" [formField]="citaForm.fecha" (dateChange)="onProfesionalChange()">
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                @if (citaForm.fecha().touched() && citaForm.fecha().invalid()) {
+                                    <mat-error>{{ citaForm.fecha().errors()[0].message }}</mat-error>}
+                                </mat-form-field>
+                            </div>
+                            <div class="horarios-columna" style="grid-column: span 2;">
+                                <mat-label style="font-weight: bold; margin-bottom: 8px; display: block;"> Horarios disponibles: </mat-label>
+                                @if (cargandoHorarios()) {
+                                <div style="display: flex; align-items: center; gap: 10px;"> <mat-spinner diameter="20"></mat-spinner>
+                                    <span>Consultando agenda del profesional...</span>
+                                </div>
+                                } @else {
+                                <div class="slots-grid">
+                                    @for (hora of bloquesHorarios; track hora) {
+                                    @let esSeleccionada = (citaModel().hora === hora);
+                                    @let estaOcupada = horasOcupadas().includes(hora);
+                                    <button type="button" class="slot-btn" [class.slot-seleccionado]="esSeleccionada" [class.slot-ocupado]="estaOcupada"
+                                            [disabled]="estaOcupada" (click)="seleccionarHora(hora)"> {{ hora }}
+                                            <mat-icon class="slot-icon">{{ esSeleccionada ? 'check_circle' : (estaOcupada ? 'block' : 'schedule') }}</mat-icon>
+                                    </button> }
+                                </div>
+                                }@if (citaForm.hora().touched() && citaForm.hora().invalid()) {
+                                <mat-error style="font-size: 12px; margin-top: 5px;">Debe seleccionar un horario disponible.</mat-error> }
+                            </div>
+                            </section>
+                        }@else if (citaModel().profesionalId === 0) {
+                            <p style="color: #666; font-style: italic;">Por favor seleccione una especialidad y un profesional para completar esta sección.</p>
+                        }
                     </div>
                 </section>
                 </div>
