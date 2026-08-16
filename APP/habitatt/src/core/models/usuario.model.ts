@@ -39,6 +39,10 @@ export interface LoginResult {
 }
 export interface RegisterRequest {
     nombre: string;
+    apellido: string;
     email: string;
     password: string;
+    isActive: boolean;
+    role: string;
+    foto: string;
 }

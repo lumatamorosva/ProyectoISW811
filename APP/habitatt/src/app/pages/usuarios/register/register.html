@@ -1,0 +1,9 @@
+<section class="page-container">
+    <header class="page-header"> <h1>Crear nuevo perfil</h1></header>
+        @if (error()) {<p class="error-message">{{ error() }}</p>}
+            <app-register-form
+                [saving]="saving()"
+                (guardar)="guardar($event)"
+                (cancelar)="cancelar()"
+        />
+</section>

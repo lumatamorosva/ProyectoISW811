@@ -147,4 +147,9 @@ export class ListaProfesional {
     })
   
     total = computed(() => this.Filtrados().length);
+
+    obtenerLabelEstado(statusKey: string): string {
+      const estadoEncontrado = this.estados()?.find(e => e.value === statusKey);
+      return estadoEncontrado ? estadoEncontrado.label : statusKey;
+    }
 }

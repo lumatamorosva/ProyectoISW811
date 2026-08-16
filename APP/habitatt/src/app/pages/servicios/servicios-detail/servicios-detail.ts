@@ -10,6 +10,7 @@ import { Servicio } from '../../../../core/models/servicio.model';
 import { ServicioService } from '../../../../core/services/servicio.service';
 import { ProfesionalService } from '../../../../core/services/profesional.service';
 import { CategoriaService } from '../../../../core/services/categoria.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-servicios-detail',
@@ -27,6 +28,8 @@ import { CategoriaService } from '../../../../core/services/categoria.service';
 })
 export class ServiciosDetail {
   private readonly route = inject(ActivatedRoute);
+  private readonly authService = inject(AuthService);
+  readonly usuario = this.authService.usuario();
   private readonly servicioService = inject(ServicioService);
   private readonly serviProf = inject(ProfesionalService);
   private readonly catService = inject(CategoriaService);

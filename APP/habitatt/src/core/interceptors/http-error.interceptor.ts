@@ -26,6 +26,9 @@ export const httpErrorInterceptor: HttpInterceptorFn = (request, next) => {
                     case 404:
                         message = 'Recurso no encontrado'
                         break
+                        case 409:
+                        message = 'Conflicto: el recurso ya existe'
+                        break
                     case 422:
                         message = 'Los datos enviados no son válidos'
                         break

@@ -1,17 +1,17 @@
 import { Component, inject, signal } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
-import { UsersForm } from '../../../shared/components/users-form/users-form';
 import { UsuarioService } from '../../../../core/services/usuario.service';
-import { usuario, usuarioUpdateDto } from '../../../../core/models/usuario.model';
+import { RegisterRequest, usuario } from '../../../../core/models/usuario.model';
 import { NotificationService } from '../../../../core/services/notification.service'
+import { RegisterForm } from '../../../shared/components/register-form/register-form';
 
 @Component({
-  selector: 'app-admin-edit-perfil',
-  imports: [UsersForm],
-  templateUrl: './admin-edit-perfil.html',
-  styleUrl: './admin-edit-perfil.css',
+  selector: 'app-register',
+  imports: [RegisterForm],
+  templateUrl: './register.html',
+  styleUrl: './register.css',
 })
-export class AdminEditPerfil {
+export class Register {
   noti = inject(NotificationService)
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
@@ -30,7 +30,6 @@ export class AdminEditPerfil {
 
     cargarDatosFormulario() {
         if (!this.id) {
-            this.error.set('El identificador del cliente no es válido')
             this.loading.set(false)
             return
         }
@@ -43,17 +42,15 @@ export class AdminEditPerfil {
         })
     }
 
-    guardar(data: usuarioUpdateDto) {
-        if (!this.id) return
+    guardar(data: RegisterRequest) {
         this.saving.set(true)
         this.error.set(null)
         console.log("Data: ", data)
-        this.usuarioService.actualizar(this.id, data as usuarioUpdateDto)
-            .subscribe({
-                next: () => { this.noti.success('¡Cambios guardados exitosamente!', undefined, 5000);
-                              this.router.navigate(['']) },
-                error: () => { this.noti.error('¡No se pudo actualizar el usuario!', undefined, 5000);
-                                this.error.set('No se pudo actualizar el usuario') },
+        this.usuarioService.registrar(data as RegisterRequest).subscribe({
+                next: () => { this.noti.success('¡Uusario registrado exitosamente!', undefined, 5000);
+                              this.router.navigate(['/login']) },
+                error: () => { this.noti.error('¡No se pudo registrar el usuario!', undefined, 5000);
+                                this.error.set('No se pudo registrar el usuario') },
                 complete: () => { this.saving.set(false) },
             })
     }

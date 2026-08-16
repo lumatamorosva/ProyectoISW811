@@ -7,6 +7,7 @@ import { UserDetailPage } from './pages/usuarios/usuarios-detail/usuarios-detail
 import { ServiciosAdminList } from './pages/servicios/servicios-admin-list/servicios-admin-list';
 import { CategoriasAdminList } from './pages/categorias/categorias-admin-list/categorias-admin-list';
 import { EspecialidadesAdminList } from './pages/especialidades/especialidades-admin-list/especialidades-admin-list';
+import { Listado } from './pages/especialidades/listado/listado';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { ProfesionalesAdminList } from './pages/profesionales/profesionales-admin-list/profesionales-admin-list';
 import { Citas } from './pages/citas/citas';
@@ -27,6 +28,7 @@ import { EditPerfil } from './pages/usuarios/edit-perfil/edit-perfil';
 import { AdminEditPerfil } from './pages/usuarios/admin-edit-perfil/admin-edit-perfil';
 import { VistaCliente } from './pages/citas/vista-cliente/vista-cliente';
 import { ListaProfesional } from './pages/citas/lista-profesional/lista-profesional';
+import { Register } from './pages/usuarios/register/register';
 
 export const routes: Routes = [
     {
@@ -35,6 +37,7 @@ export const routes: Routes = [
         children: [
             {path: '', component:Home, title: 'Página de Inicio'},
             {path: 'login', component: Login, title: 'Inicio de sesión'},
+            {path: 'register', component: Register, title: 'Registro de usuario'},
             {path: 'servicios', component:ServiciosList, title: 'Servicios disponibles'},
             {path: 'servicios/:id', component:ServiciosDetail, title: 'Servicio Detalles',canActivate: [authGuard, roleGuard],data: { roles: [Role.USER, Role.PROFESIONAL, Role.ADMIN] }},
             {path: 'perfilEdit', component:EditPerfil, title: 'Ver o modificar perfil', canActivate: [authGuard, roleGuard],data: { roles: [Role.USER, Role.PROFESIONAL] }},
@@ -44,6 +47,7 @@ export const routes: Routes = [
             { path: 'admin/usuario-detail/:id', component: UserDetailPage, title: 'Gestión de usuario especifico', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] }},
             { path: 'admin/usuarios', component: UsuariosList, title: 'Gestión de usuarios', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] } },
             { path: 'admin/editUser/:id', component: AdminEditPerfil, title: 'Cambiar datos de usuario', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] } },
+            { path: 'especialidades', component: Listado, title: 'Especialidades', canActivate: [authGuard, roleGuard],data: { roles: [Role.USER, Role.PROFESIONAL] } },
             { path: 'admin/servicios', component: ServiciosAdminList, title: 'Gestión de servicios', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] } },
             { path: 'admin/servicios/create', component: ServiciosAdminCreate, title: 'Creación de nuevos servicios', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] }},
             { path: 'admin/servicios/editar/:id', component: ServiciosAdminEdit, title: 'Editar Servicio', canActivate: [authGuard, roleGuard],data: { roles: [Role.ADMIN] } },

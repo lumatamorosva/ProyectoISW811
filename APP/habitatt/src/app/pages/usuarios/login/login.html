@@ -22,32 +22,25 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Contraseña</mat-label>
                     <mat-icon matPrefix>password</mat-icon>
-                    <input matInput [type]="ocultarPassword() ? 'password' : 'text'" autocomplete="current-password"
-                        [formField]="loginForm.password" />
-                    <button mat-icon-button matSuffix type="button" (click)="ocultarPassword.update(v => !v)"
-                        aria-label="Mostrar u ocultar contraseña">
-                        <mat-icon>{{ ocultarPassword() ? 'visibility' : 'visibility_off' }}</mat-icon>
-                    </button>
+                    <input matInput [type]="ocultarPassword() ? 'password' : 'text'" autocomplete="current-password" [formField]="loginForm.password" />
+                    <button mat-icon-button matSuffix type="button" (click)="ocultarPassword.update(v => !v)" aria-label="Mostrar u ocultar contraseña">
+                        <mat-icon>{{ ocultarPassword() ? 'visibility' : 'visibility_off' }}</mat-icon> </button>
                     @if (loginForm.password().touched() && loginForm.password().invalid()) {
                     <mat-error>{{ loginForm.password().errors()[0].message }}</mat-error>
                     }
                 </mat-form-field>
-
                 @if (errorServidor()) {
                 <div class="server-error" role="alert">
                     <mat-icon>error</mat-icon><span>{{ errorServidor() }}</span>
                 </div>
                 }
-
                 <button mat-flat-button class="submit-button" type="submit"
                     [disabled]="enviando() || loginForm().invalid()">
-                    @if (enviando()) {
-                    <mat-spinner diameter="20" />
-                    <span>Ingresando...</span>
-                    } @else {
-                    <mat-icon>login</mat-icon><span>Ingresar</span>
-                    }
+                    @if (enviando()) { <mat-spinner diameter="20" /> <span>Ingresando...</span>
+                    } @else { <mat-icon>login</mat-icon><span>Ingresar</span> }
                 </button>
+                <span>¿No tienes cuenta?</span>
+                <button mat-flat-button type="button" routerLink="/register"><mat-icon>person_add</mat-icon><span>Crear cuenta</span> </button>
             </form>
         </mat-card-content>
     </mat-card>

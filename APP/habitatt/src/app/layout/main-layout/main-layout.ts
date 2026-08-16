@@ -1,9 +1,8 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent,MenuItem } from '../header/header';
 import { Footer } from '../footer/footer';
 import { Role } from '../../../core/models/role.model'
-import { roleGuard } from '../../../core/guards/role.guard';
 @Component({
   selector: 'app-main-layout',
   standalone: true,

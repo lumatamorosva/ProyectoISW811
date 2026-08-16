@@ -22,18 +22,41 @@
         <div class="fecha-reagendar-container">
             <span >Estado de la cita:</span><p>{{ estado()?.label }}</p>
             @if(estado()?.label !== "Cancelada") {
-            <button  type="button"  mat-icon-button  color="warn" (click)="onCancelarCita()" matTooltip="Cancelar cita"> <mat-icon>event_busy</mat-icon> </button>}
-        </div>
- <p></p>
+                <button  type="button"  mat-icon-button  color="warn" (click)="onCancelarCita()" matTooltip="Cancelar cita"> <mat-icon>event_busy</mat-icon> </button>}
+            @if(usuario?.role === 'PROFESIONAL'){
+                <button  type="button"  mat-icon-button  color="warn" (click)="onAceptarCita()" matTooltip="Aceptar cita"> <mat-icon>check</mat-icon> </button>}
+        </div> <p></p>
+
         <span>Apartada para:</span>
             <div class="fecha-reagendar-container">
                 <p>{{ cit.fecha | date:'dd/MM/yyyy' }} a las {{ cit.hora }}</p>
-                @if(estado()?.label !== "Cancelada") {
+                @if(estado()?.label !== "Cancelada" && usuario?.role === 'USER') {
                 <button  type="button"  mat-icon-button  color="primary"  (click)="picker.open()"  matTooltip="Reagendar cita">
                 <mat-icon>calendar_month</mat-icon> </button>}
                 <input  matInput  [matDatepicker]="picker"  class="datepicker-input-inline"  (dateChange)="onFechaReagendada($event.value)" />
                 <mat-datepicker #picker></mat-datepicker>
             </div>
+
+            @if(nuevaFecha()) {
+                <div class="reagendar-horarios-block">
+                    <span class="subtitulo-horarios">Seleccione nueva hora para el {{ nuevaFecha() | date:'dd/MM/yyyy' }}:</span>
+                    @if (cargandoHorarios()) {<p class="loading-text">Cargando disponibilidad...</p>
+                    } @else {
+                        <div class="slots-grid">
+                            @for (hora of bloquesHorarios; track hora) {
+                                @let esSeleccionada = (horaNueva() === hora);
+                                @let estaOcupada = horasOcupadas().includes(hora);
+                                <button type="button" class="slot-btn" [class.slot-seleccionado]="esSeleccionada" [class.slot-ocupado]="estaOcupada"
+                                        [disabled]="estaOcupada" (click)="seleccionarHora(hora)"> <mat-icon class="slot-icon">
+                                        {{ esSeleccionada ? 'check_circle' : (estaOcupada ? 'block' : 'schedule') }} </mat-icon>
+                                    <span>{{ hora }}</span>
+                                </button>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+
             <div class="fecha-reagendar-container">
                 <span>Modalidad: </span>
                 <p>{{ nombreModalidad()}}</p>
@@ -41,7 +64,7 @@
             <span>Descripción: </span>
         <div class="fecha-reagendar-container">
             <p class="descripcion">{{ cit.descripcion }}</p>
-            @if(estado()?.label === "Pendiente") {
+            @if(estado()?.label === "Pendiente"  && usuario?.role === 'USER') {
                 <button  mat-icon-button  color="accent" (click)="togglePopover()" cdkOverlayOrigin #trigger="cdkOverlayOrigin" matTooltip="Cambiar descripción"> <mat-icon>edit</mat-icon> </button>
                 <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="mostrarPopover()" (overlayOutsideClick)="cerrarPopover()">
                 <div class="popover-descripcion mat-elevation-z8">
@@ -56,15 +79,16 @@
                     </div></ng-template>
             }
         </div>    
-        
     </section>
-    @if(descripcionNueva !== '' || nuevaFecha() !== null){
-        <section class="info">
-            @if(nuevaFecha() !== null) {<span> Nueva fecha seleccionada:</span> <p>{{ nuevaFecha() | date:'dd/MM/yyyy' }}</p>}
-            @if(descripcionNueva !== '') {<span> Nueva descripción:</span> <p>{{ descripcionNueva }}</p>}
-            <a mat-stroked-button (click)="botonActualizar()">Actualizar</a><p></p>
+    @if(descripcionNueva !== '' || nuevaFecha() !== null || horaNueva() !== null){
+        <section class="info resumen-cambios">
+            <h3>Cambios pendientes de guardar:</h3>
+            @if(nuevaFecha() !== null) { <p><strong>Nueva fecha:</strong> {{ nuevaFecha() | date:'dd/MM/yyyy' }}</p> }
+            @if(horaNueva() !== null) { <p><strong>Nueva hora:</strong> {{ horaNueva() }}</p> }
+            @if(descripcionNueva !== '') { <p><strong>Nueva descripción:</strong> {{ descripcionNueva }}</p> }
+            <button mat-raised-button color="primary" (click)="botonActualizar()"> <mat-icon>save</mat-icon> Guardar Cambios </button>
         </section>
-    }    
+    }   
 </section>
 }
 <a mat-button routerLink="/citas"> <mat-icon>arrow_back</mat-icon> Volver a la lista de citas </a>

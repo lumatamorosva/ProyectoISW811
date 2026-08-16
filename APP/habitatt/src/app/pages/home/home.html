@@ -9,18 +9,12 @@
 </section>
 <section class="hero-image-container"><img class="img1" src="home.jpg" alt="fachada"></section>
 <section class="summary-grid">
-    @for (card of cards(); track card.title) {
+    @for (card of visibleCards(); track card.link) {
     <mat-card [routerLink]="card.link" class="dashboard-card glass-card">
         <mat-card-header>
-            <div class="card-icon ">
-                <mat-icon>{{ card.icon }}</mat-icon>
-            </div>
-            <h2>{{ card.title }}</h2>
+            <div class="card-icon "> <mat-icon>{{ card.icon }}</mat-icon> </div> <h2>{{ card.title }}</h2>
         </mat-card-header>
-        <mat-card-content>
-
-            <p>{{ card.description }}</p>
-        </mat-card-content>
+        <mat-card-content> <p>{{ card.description }}</p> </mat-card-content>
     </mat-card>
     }
 </section>

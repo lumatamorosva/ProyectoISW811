@@ -1,0 +1,68 @@
+<mat-card class="game-form-card">
+    <mat-card-content>
+        <form class="game-form" (submit)="$event.preventDefault(); submit()">
+            <div class="form-section">
+                <div class="form-grid">Datos personales y contacto:
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput type="text" [formField]="userForm.nombre" />
+                    @if (userForm.nombre().touched() && userForm.nombre().invalid()) {
+                        <mat-error>{{ userForm.nombre().errors()[0].message }}</mat-error> }
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Apellido</mat-label>
+                    <input matInput type="text" [formField]="userForm.apellido" />
+                    @if (userForm.apellido().touched() && userForm.apellido().invalid()) {
+                        <mat-error>{{ userForm.apellido().errors()[0].message }}</mat-error> }
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="text" [formField]="userForm.email" />
+                    @if (userForm.email().touched() && userForm.email().invalid()) {
+                        <mat-error>{{ userForm.email().errors()[0].message }}</mat-error> }
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput type="password" [formField]="userForm.password" />
+                    @if (userForm.password().touched() && userForm.password().invalid()) {
+                        <mat-error>{{ userForm.password().errors()[0].message }}</mat-error> }
+                </mat-form-field>
+                <div class="image-layout">
+                    <div class="image-upload-box">
+                        <button mat-stroked-button type="button" color="primary" (click)="fileInput.click()">
+                            <mat-icon>upload</mat-icon>Seleccionar una foto de perfil
+                        </button>
+                        <input #fileInput hidden type="file" accept="image/jpeg,image/png,image/webp"
+                            (change)="onImageSelected($event)" />
+                        @if (uploadingImage()) {
+                        <div class="uploading">
+                            <mat-spinner diameter="28"></mat-spinner>
+                            <span>Subiendo imagen...</span>
+                        </div>}
+                    </div>
+                    <div class="image-preview-box">
+                        @if (imagePreview()) { <img class="image-preview" [src]="imagePreview()" alt="Imagen subida" />
+                            } @else {
+                            <div class="empty-preview">
+                                <mat-icon>image_not_supported</mat-icon>
+                                <span>Sin imagen seleccionada</span>
+                            </div>}
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button mat-stroked-button color="accent" class="primary-icon-button" type="button"
+                            (click)="cancelar.emit()"> <mat-icon>close</mat-icon> Cancelar </button>
+
+                        <button mat-stroked-button type="submit" [color]="isEdit() ? 'accent' : 'primary'"
+                            [class.edit-icon-button]="isEdit()" [class.create-icon-button]="!isEdit()"
+                            [disabled]="isSubmitting()">
+                            @if (isSubmitting()) { <mat-icon>hourglass_top</mat-icon> Guardando...
+                            } @else { <mat-icon> {{ isEdit() ? 'edit' : 'add_circle' }}
+                            </mat-icon> {{ 'Crear Usuario' }} }
+                        </button>
+                        </div>
+                </div>
+            </div>
+        </form>    
+    </mat-card-content>        
+</mat-card>

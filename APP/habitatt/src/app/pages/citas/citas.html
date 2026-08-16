@@ -62,7 +62,7 @@
             <ng-container matColumnDef="estado">
             <th mat-header-cell *matHeaderCellDef>Estado</th>
             <td mat-cell *matCellDef="let cita">
-                <small>{{ cita.status }}</small>
+                <small>{{ obtenerLabelEstado(cita.status) }}</small>
             </td></ng-container>
             <ng-container matColumnDef="acciones">
             <th mat-header-cell *matHeaderCellDef>Detalles</th>

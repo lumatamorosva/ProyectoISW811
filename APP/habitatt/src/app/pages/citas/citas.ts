@@ -78,6 +78,7 @@ cargarTodoElSistema(): void {
     usuarios: this.usuarioService.listar(),
     servicios: this.servService.listar(),
     estados: this.statusService.listar(),
+    
     profesionales: this.profService.listar(),
     citas: this.appoService.getByClient(idCliente)
   }).subscribe({
@@ -85,6 +86,7 @@ cargarTodoElSistema(): void {
       this.usuariosLista.set(resultado.usuarios.data);
       this.serviciosLista.set(resultado.servicios.data);
       this.estados.set(resultado.estados.data);
+      console.log(resultado.estados);
       this.profesionalesLista.set(resultado.profesionales.data);
 
       const listaCitasRaw = resultado.citas.data;
@@ -131,4 +133,10 @@ cargarTodoElSistema(): void {
     });
   })
 
-  total = computed(() => this.Filtrados().length);}
+  total = computed(() => this.Filtrados().length);
+
+obtenerLabelEstado(statusKey: string): string {
+  const estadoEncontrado = this.estados()?.find(e => e.value === statusKey);
+  return estadoEncontrado ? estadoEncontrado.label : statusKey;
+}
+}

@@ -9,8 +9,8 @@ export interface ConfirmDialogData { titulo: string; mensaje: string; }
   imports: [MatDialogModule, MatButtonModule],
   template: ` <h2 mat-dialog-title>{{ data.titulo }}</h2>
     <mat-dialog-content> <p>{{ data.mensaje }}</p> </mat-dialog-content>
-    <mat-dialog-actions align="end"> <button mat-button (click)="cancelar()">Mantener Cita</button>
-        <button mat-flat-button color="warn" (click)="confirmar()">Confirmar Cancelación</button>
+    <mat-dialog-actions align="end"> <button mat-button (click)="cancelar()">No</button>
+        <button mat-flat-button color="warn" (click)="confirmar()">Sí</button>
     </mat-dialog-actions> `
 })
 export class ConfirmDialogComponent {
