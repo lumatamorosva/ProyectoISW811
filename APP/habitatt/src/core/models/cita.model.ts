@@ -39,6 +39,9 @@ export interface updateCitaDto{
     clienteId: number;
     profesionalId: number;
     servicioId: number;
+
+    usuarioId?: number;
+    motivo?: string;
 }
 export interface citaFormModel{
     fecha: Date;

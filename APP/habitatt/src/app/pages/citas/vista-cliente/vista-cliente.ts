@@ -145,8 +145,35 @@ export class VistaCliente {
     if(this.cita()?.descripcion !== valorNuevo){
       this.descripcionNueva = valorNuevo;
   }this.mostrarPopover.set(false);}
-  botonActualizar(){
-    this.actualizarCita(this.cita()!, this.descripcionNueva, this.nuevaFecha() || this.cita()?.fecha,this.horaNueva() || this.cita()?.hora);
+
+  botonActualizar() {
+    const citaActual = this.cita();
+    const userId = this.usuario?.id;
+    if (!citaActual) return;
+    if (!userId) {
+      console.error('No se pudo determinar el usuario actual');
+      return;
+    }
+    this.cambiarEstado(citaActual, Status.RESCHEDULED);
+    this.actualizarCita(
+      citaActual,
+      this.descripcionNueva || citaActual.descripcion,
+      this.nuevaFecha() || citaActual.fecha,
+      this.horaNueva() || citaActual.hora
+    );
+  }
+
+  onCompletarCita() {
+    const citaActual = this.cita();
+    if (!citaActual) { console.warn('No hay una cita activa para completar.');
+      return; }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {width: '400px',
+      data: { titulo: 'Completar cita', mensaje: '¿Estás seguro de que deseas marcar esta cita como completada?'},
+    });
+    dialogRef.afterClosed().subscribe((confirmado: boolean) => {
+      this.noti.success('Cita completada correctamente');
+      if (confirmado) {this.cambiarEstado(citaActual, Status.COMPLETED);}
+    });
   }
 ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -221,23 +248,30 @@ ngOnInit(): void {
       }
     });
   }
-    cambiarEstado(cita: Cita, status: Status): void {
-        const datosActualizados: Partial<updateCitaDto> = { status: status };
-        this.citaService.actualizar(cita.id, datosActualizados).subscribe({
-            next: () => {cita.status = status;
-              if(this.usuario?.role === 'PROFESIONAL'){this.router.navigate(['/citasProfesional']);
-              }else if(this.usuario?.role === 'USER'){this.router.navigate(['/citas']);}
-              
-            }, error: (err) => console.error('Error al actualizar:', err) });
-      }
-    actualizarCita(cita: Cita, descripcion?: string, nuevaFecha?: Date, nuevaHora?: string): void {
+  
+  cambiarEstado(cita: Cita, status: Status): void {
+    const userId = this.usuario?.id;
+    if (!userId) { console.error('No se pudo determinar el usuario actual'); return; }
+    const datosActualizados: Partial<updateCitaDto> = { status: status };
+    this.citaService.actualizar(cita.id, datosActualizados, userId, "Cambio de estado").subscribe({
+      next: () => {
+        cita.status = status;
+        if (this.usuario?.role === 'PROFESIONAL') { this.router.navigate(['/citasProfesional']);
+        } else if (this.usuario?.role === 'USER') { this.router.navigate(['/citas']); }
+      },
+      error: (err) => console.error('Error al actualizar estado:', err)
+    });
+  }
+
+  actualizarCita(cita: Cita, descripcion?: string, nuevaFecha?: Date, nuevaHora?: string): void {
+    const userId = this.usuario?.id;
+    if (!userId) { console.error('No se encontró el ID del usuario actual'); return; }
     const datosActualizados: Partial<updateCitaDto> = {
       descripcion: descripcion || cita.descripcion,
       fecha: nuevaFecha || cita.fecha,
       hora: nuevaHora || cita.hora
     };
-
-    this.citaService.actualizar(cita.id, datosActualizados).subscribe({
+    this.citaService.actualizar(cita.id, datosActualizados, userId, "Reagendamiento/Actualización de cita").subscribe({
       next: () => {
         cita.descripcion = descripcion || cita.descripcion;
         cita.fecha = nuevaFecha || cita.fecha;
@@ -245,7 +279,7 @@ ngOnInit(): void {
         this.noti.success('Cita actualizada correctamente');
         this.router.navigate(['/citas']);
       },
-      error: (err) => console.error('Error al actualizar:', err)
+      error: (err) => console.error('Error al actualizar cita:', err)
     });
   }
      

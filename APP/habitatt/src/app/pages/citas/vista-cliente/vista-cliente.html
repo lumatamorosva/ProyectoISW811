@@ -21,16 +21,16 @@
     <section class="info">
         <div class="fecha-reagendar-container">
             <span >Estado de la cita:</span><p>{{ estado()?.label }}</p>
-            @if(estado()?.label !== "Cancelada") {
+            @if(estado()?.label !== "Cancelada" && estado()?.label !== "Confirmada" ) {
                 <button  type="button"  mat-icon-button  color="warn" (click)="onCancelarCita()" matTooltip="Cancelar cita"> <mat-icon>event_busy</mat-icon> </button>}
-            @if(usuario?.role === 'PROFESIONAL'){
+            @if(usuario?.role === 'PROFESIONAL' && estado()?.label !== "Confirmada"){
                 <button  type="button"  mat-icon-button  color="warn" (click)="onAceptarCita()" matTooltip="Aceptar cita"> <mat-icon>check</mat-icon> </button>}
         </div> <p></p>
 
         <span>Apartada para:</span>
             <div class="fecha-reagendar-container">
                 <p>{{ cit.fecha | date:'dd/MM/yyyy' }} a las {{ cit.hora }}</p>
-                @if(estado()?.label !== "Cancelada" && usuario?.role === 'USER') {
+                @if(estado()?.label !== "Cancelada" && estado()?.label !== "Confirmada" && usuario?.role === 'USER') {
                 <button  type="button"  mat-icon-button  color="primary"  (click)="picker.open()"  matTooltip="Reagendar cita">
                 <mat-icon>calendar_month</mat-icon> </button>}
                 <input  matInput  [matDatepicker]="picker"  class="datepicker-input-inline"  (dateChange)="onFechaReagendada($event.value)" />
@@ -90,5 +90,17 @@
         </section>
     }   
 </section>
+ <div class="fecha-reagendar-container">
+    <section>
+        @if(usuario?.role === 'PROFESIONAL' && estado()?.label === "Confirmada"){
+            <a class="botFin" mat-button (click)="onCompletarCita()"> <mat-icon>check_circle</mat-icon> Marcar Cita como completada </a>
+        }
+    </section>
+ </div>
 }
-<a mat-button routerLink="/citas"> <mat-icon>arrow_back</mat-icon> Volver a la lista de citas </a>
+ @if(usuario?.role === 'PROFESIONAL'){
+    <a  mat-button routerLink="/citasProfesional"> <mat-icon>arrow_back</mat-icon> Volver a la lista de citas</a>
+ }
+ @if(usuario?.role === 'USER'){
+    <a mat-button routerLink="/citas"> <mat-icon>arrow_back</mat-icon> Volver a la lista de citas </a>
+ }
