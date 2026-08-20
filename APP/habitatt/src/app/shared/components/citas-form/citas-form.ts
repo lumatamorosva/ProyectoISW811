@@ -253,12 +253,14 @@ private buildDto(): createCitaDto | updateCitaDto {
     });
   }
 
-  private cargarEspecialidades(): void{
-    this.especialS.listar().subscribe({
-      next: (response) =>
-        this.listaEspecialidades.set(response.data || [])
-    })
-  }
+  private cargarEspecialidades(): void {
+  this.especialS.listar().subscribe({
+    next: (response) => {
+      const activas = (response.data || []).filter((esp) => esp.isActive);
+      this.listaEspecialidades.set(activas);
+    }
+  });
+}
 
   private cargarTodosLosProfesionales(): void {
     this.profService.listar().subscribe({

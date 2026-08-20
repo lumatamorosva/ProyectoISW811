@@ -163,10 +163,12 @@ private buildDto(): ServicioCreateDto | ServicioUpdateDto {
 
   private obtenerCats(): void {
   this.catServ.listar().subscribe({
-      next: (response) => {
-        this.categorias.set(response.data);
-      }
-  })}
+    next: (response) => {
+      const activas = response.data.filter((cat) => cat.isActive);
+      this.categorias.set(activas);
+    }
+  });
+}
   private obtenerModalities(): void{
     this.modServ.listar().subscribe({
       next: (response) => {
