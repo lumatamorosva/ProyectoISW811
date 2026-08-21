@@ -1,4 +1,4 @@
-import { especialidad } from "./especialidad.model";
+import { Especialidad } from "./especialidad.model";
 
 export interface profesional{
     id: number;
@@ -14,7 +14,7 @@ export interface profesional{
     isActive: boolean;
     isAvailable: boolean;
     foto: string;
-    especialidades?: especialidad[];
+    especialidades: { especialidadId: number }[];
 
     createdAt: string;
     updatedAt: string;
@@ -34,7 +34,7 @@ export interface ProfesionaCreateDto{
     isAvailable: boolean;
     foto: string;
 
-    especialidades?: especialidad[];
+    especialidades: { especialidadId: number }[];
 }
 
 export interface ProfesionalUpdateDto{
@@ -51,7 +51,7 @@ export interface ProfesionalUpdateDto{
     isAvailable: boolean;
     foto: string;
 
-    especialidades?: especialidad[];
+    especialidades: { especialidadId: number }[];
 }
 
 export interface ProfesionalFormModel{
@@ -68,6 +68,6 @@ export interface ProfesionalFormModel{
     isAvailable: boolean;
     foto: string;
 
-    especialidades?: especialidad[];
+    especialidades: { especialidadId: number }[];
 }
 

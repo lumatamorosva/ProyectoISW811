@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
-import { especialidad } from '../../../../core/models/especialidad.model';
+import { Especialidad } from '../../../../core/models/especialidad.model';
 
 @Component({
   selector: 'app-listado',
@@ -31,7 +31,7 @@ import { especialidad } from '../../../../core/models/especialidad.model';
 export class Listado {
   private readonly especialidadesService = inject(EspecialidadService);
   //Listar:
-  specialidades = signal<especialidad[]>([]);
+  specialidades = signal<Especialidad[]>([]);
   //Filtro de busqueda
   search = signal('');
   //Indicador de carga

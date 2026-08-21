@@ -15,6 +15,8 @@ import { ProfesionalService } from '../../../../core/services/profesional.servic
 import { ImageService } from '../../../../core/services/image.service';
 import { ModalityService } from '../../../../core/services/modality.service';
 import { Modality } from '../../../../core/models/modality.model';
+import {EspecialidadService} from "../../../../core/services/especialidad.service";
+import {Especialidad} from "../../../../core/models/especialidad.model";
 
 @Component({
   selector: 'app-profesionales-form',
@@ -35,11 +37,13 @@ export class ProfesionalesForm {
   private readonly profService = inject(ProfesionalService);
   private readonly imageService = inject(ImageService);
   private readonly modServ = inject(ModalityService);
+  private readonly espServ = inject(EspecialidadService);
 
   uploadingImage = signal(false)
   imagePreview = signal<string | null>(null)
   selectedImageFile = signal<File | null>(null)
   mods = signal<Modality[] | null>(null)
+  especialidadesLista = signal<Especialidad[] | null>(null);
 
   profesional = input<profesional | null>(null);
   saving = input<boolean>(false);
@@ -60,6 +64,7 @@ export class ProfesionalesForm {
     isActive: true,
     isAvailable: true,
     foto: '',
+    especialidades: [],
   });
 
 profesionalForm = form(this.profesionalModel, (path) => {
@@ -95,8 +100,10 @@ profesionalForm = form(this.profesionalModel, (path) => {
 
 constructor() {
   this.obtenerModalities(),
+  this.obtenerEspecialidades(),
     effect(() => { const profesional = this.profesional()
       if (!profesional) { this.resetForm(); return}
+      const idsEspecialidades = profesional.especialidades?.map((e: any) => e.id) ?? [];
       console.log("Profesional a editar:" + profesional.id);
       this.profesionalModel.set({
         nombre: profesional.nombre ?? '',
@@ -111,6 +118,7 @@ constructor() {
         isAvailable: profesional.isAvailable?? false,
         modalidad: profesional.modalidad,
         foto: profesional.foto ?? '',
+        especialidades: idsEspecialidades,
       })
       this.selectedImageFile.set(null)
       this.imagePreview.set( profesional.foto ? this.imageService.getImageUrl(profesional.foto) : null )
@@ -130,6 +138,7 @@ private resetForm() {
         isAvailable: true,
         modalidad: 'MIXTA',
         foto: '',
+        especialidades: [],
     })
     this.selectedImageFile.set(null)
     this.imagePreview.set(null)
@@ -140,6 +149,15 @@ private resetForm() {
     this.selectedImageFile.set(file)
     this.imagePreview.set(URL.createObjectURL(file))
   }
+
+  private obtenerEspecialidades(): void {
+  this.espServ.listar().subscribe({
+    next: (response) => {
+      const activas = response.data.filter((esp) => esp.isActive);
+      this.especialidadesLista.set(activas);
+    }
+  });
+}
 
   submit() {
     if (this.isSubmitting()) return
@@ -185,6 +203,7 @@ private resetForm() {
     this.profesionalForm.isActive().markAsTouched()
     this.profesionalForm.modalidad().markAsTouched()
     this.profesionalForm.foto().markAsTouched()
+    this.profesionalForm.especialidades().markAsTouched()
   }
   private formularioInvalido(): boolean {
     return (
@@ -199,11 +218,14 @@ private resetForm() {
       this.profesionalForm.tarifaBase().invalid() ||
       this.profesionalForm.expAnnos().invalid() ||
       this.profesionalForm.modalidad().invalid() ||
-      this.profesionalForm.foto().invalid() && !this.selectedImageFile()
+      this.profesionalForm.foto().invalid() && !this.selectedImageFile() ||
+      this.profesionalForm.especialidades().invalid()
     );
   }
 private buildDto(): ProfesionaCreateDto | ProfesionalUpdateDto {
-    const value = this.profesionalModel()
+    const value = this.profesionalModel();
+    const especialidadesMapeadas = (value.especialidades ?? []).map((esp: any) => ({
+      especialidadId: Number(esp.id ?? esp.especialidadId ?? esp) }));
     return {
       nombre: value.nombre.trim(),
       apellido: value.apellido.trim(),
@@ -217,6 +239,7 @@ private buildDto(): ProfesionaCreateDto | ProfesionalUpdateDto {
       isAvailable: value.isAvailable,
       foto: this.profesionalForm.foto().value() ?? '',
       modalidad: value.modalidad,
+      especialidades: especialidadesMapeadas,
     }
   }
   private obtenerModalities(): void{

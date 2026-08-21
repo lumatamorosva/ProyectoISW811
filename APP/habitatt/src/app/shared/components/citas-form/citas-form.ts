@@ -15,7 +15,7 @@ import { ProfesionalService } from '../../../../core/services/profesional.servic
 import { Servicio } from '../../../../core/models/servicio.model';
 import { profesional } from '../../../../core/models/profesional.model';
 import { Estado } from '../../../../core/models/estado.model';
-import { especialidad } from '../../../../core/models/especialidad.model';
+import { Especialidad } from '../../../../core/models/especialidad.model';
 import { EspecialidadService } from '../../../../core/services/especialidad.service';
 import { FormsModule } from '@angular/forms';
 import { ModalityService } from '../../../../core/services/modality.service';
@@ -70,7 +70,7 @@ export class CitasForm {
 
   modId = signal<string | null>(null);
   especialidadId = signal<number | null>(null);
-  listaEspecialidades = signal<especialidad[] | null>(null);
+  listaEspecialidades = signal<Especialidad[] | null>(null);
   listaProfesionales = signal<profesional[] | null>(null);
   listaModalidades = signal<Modality[] | null>(null);
 

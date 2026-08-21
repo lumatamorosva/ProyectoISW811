@@ -130,3 +130,10 @@ word-break: break-word;
   padding-right: 8px !important;
   text-align: center;
 }
+
+.titulo1 {
+    margin-top: 1.5rem;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #301c09
+}

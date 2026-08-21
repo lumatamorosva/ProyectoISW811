@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
-import { especialidad} from '../../../../core/models/especialidad.model';
+import { Especialidad} from '../../../../core/models/especialidad.model';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -32,7 +32,7 @@ import { MatSelectModule } from '@angular/material/select';
 export class EspecialidadesAdminList {
   private readonly SpService = inject(EspecialidadService);
   //Listar:
-  specs = signal<especialidad[]>([]);
+  specs = signal<Especialidad[]>([]);
   //Filtro de busqueda
   search = signal('');
   //Indicador de carga

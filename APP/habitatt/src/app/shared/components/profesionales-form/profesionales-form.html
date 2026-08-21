@@ -63,6 +63,17 @@
                         <mat-error>{{ profesionalForm.titulo().errors()[0].message }}</mat-error> }
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Especialidades</mat-label>
+                    <mat-select [formField]="profesionalForm.especialidades" multiple>
+                        @for (esp of especialidadesLista(); track esp.id) {
+                            <mat-option [value]="esp.id">{{ esp.nombre }}</mat-option>
+                        }
+                    </mat-select>
+                    @if (profesionalForm.especialidades().touched() && profesionalForm.especialidades().invalid()) {
+                        <mat-error>Seleccione al menos una especialidad</mat-error>
+                    }
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Años de experiencia</mat-label>
                     <input matInput type="number" [formField]="profesionalForm.expAnnos" />
                     @if (profesionalForm.expAnnos().touched() && profesionalForm.expAnnos().invalid()) {

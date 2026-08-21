@@ -39,8 +39,10 @@ export class ProfesionalesAdminCreate {
         console.log("Data: ", data)
         this.profService.crear(data as ProfesionaCreateDto).subscribe({
                 next: () => {  this.router.navigate(['/admin/profesionales']) },
-                error: () => { this.error.set('No se pudo crear el profesional') },
-                complete: () => { this.saving.set(false) },
+                error: (err) => { 
+                    console.error('❌ Causa del error 400 devuelta por la API:', err.error);
+                        this.error.set('No se pudo crear el profesional. Revisa los datos.');
+                        this.saving.set(false);}
             })
     } cancelar() {  this.router.navigate(['/admin/profesionales']) }
 }
