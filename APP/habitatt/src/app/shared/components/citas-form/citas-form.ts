@@ -134,7 +134,7 @@ seleccionarHora(hora: string): void {
 citaForm = form(this.citaModel, (path) => {
     required(path.profesionalId, { message: 'El profesional debe ser seleccionado de la lista' })
     min(path.profesionalId, 1, { message: 'El profesional debe ser seleccionado de la lista' })
-    required(path.fecha, { message: 'La fecha debe es necesaria' })
+    required(path.fecha, { message: 'La fecha es necesaria' })
     minDate(path.fecha, new Date(), { message: 'La fecha no puede ser anterior a hoy' })
     required(path.hora, { message: 'La hora no puede quedar en blanco' })
     pattern(path.hora, /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/, { message: 'Formato de hora inválido' })

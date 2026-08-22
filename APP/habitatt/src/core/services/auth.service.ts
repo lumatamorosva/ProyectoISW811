@@ -29,7 +29,7 @@ export class AuthService {
     readonly esAdmin = computed(() => { const rol = this.rol()
         return rol !== null && rol === Role.ADMIN })
 
-    constructor() { this.inicializarSesion().subscribe();}    
+    //constructor() { this.inicializarSesion().subscribe();}    
     login( credenciales: LoginRequest ): Observable<usuario> {
         this._cargandoSesion.set(true)
         return this.http.post<ApiResponse<LoginResult>>( `${this.apiUrl}/login`,credenciales)

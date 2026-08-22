@@ -88,7 +88,7 @@ constructor() {
         isActive: usuario.isActive ?? false,
         role: usuario.role ?? '',
         foto: usuario.foto ?? '',
-      })
+      });
       this.selectedImageFile.set(null)
       this.imagePreview.set( usuario.foto ? this.imageService.getImageUrl(usuario.foto) : null )
     })

@@ -167,6 +167,16 @@ export class VistaCliente {
     const citaActual = this.cita();
     if (!citaActual) { console.warn('No hay una cita activa para completar.');
       return; }
+    const hoy = new Date();
+    const fechaCita = new Date(citaActual.fecha);
+
+    if (hoy < fechaCita) {
+    this.dialog.open(ConfirmDialogComponent, { width: '400px',
+      data: { titulo: 'Acción no permitida', mensaje: 'No se puede marcar como completada una cita cuya fecha aún no ha transcurrido.' }
+    });
+    return;
+  }
+
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {width: '400px',
       data: { titulo: 'Completar cita', mensaje: '¿Estás seguro de que deseas marcar esta cita como completada?'},
     });

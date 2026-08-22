@@ -21,16 +21,16 @@
     <section class="info">
         <div class="fecha-reagendar-container">
             <span >Estado de la cita:</span><p>{{ estado()?.label }}</p>
-            @if(estado()?.label !== "Cancelada" && estado()?.label !== "Confirmada" ) {
+            @if(estado()?.label === "Pendiente") {
                 <button  type="button"  mat-icon-button  color="warn" (click)="onCancelarCita()" matTooltip="Cancelar cita"> <mat-icon>event_busy</mat-icon> </button>}
-            @if(usuario?.role === 'PROFESIONAL' && estado()?.label !== "Confirmada"){
+            @if(usuario?.role === 'PROFESIONAL' && (estado()?.label === "Pendiente")){
                 <button  type="button"  mat-icon-button  color="warn" (click)="onAceptarCita()" matTooltip="Aceptar cita"> <mat-icon>check</mat-icon> </button>}
         </div> <p></p>
 
         <span>Apartada para:</span>
             <div class="fecha-reagendar-container">
                 <p>{{ cit.fecha | date:'dd/MM/yyyy' }} a las {{ cit.hora }}</p>
-                @if(estado()?.label !== "Cancelada" && estado()?.label !== "Confirmada" && usuario?.role === 'USER') {
+                @if(estado()?.label === "Pendiente" && usuario?.role === 'USER') {
                 <button  type="button"  mat-icon-button  color="primary"  (click)="picker.open()"  matTooltip="Reagendar cita">
                 <mat-icon>calendar_month</mat-icon> </button>}
                 <input  matInput  [matDatepicker]="picker"  class="datepicker-input-inline"  (dateChange)="onFechaReagendada($event.value)" />

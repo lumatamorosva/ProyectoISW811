@@ -39,8 +39,8 @@ export class EditPerfil {
         console.log("Data: ", data)
         this.usuarioService.actualizar(this.id, data as usuarioUpdateDto)
             .subscribe({
-                next: () => { this.noti.success('¡Cambios guardados exitosamente!', undefined, 5000);
-                              this.router.navigate(['']) },
+                next: () => { window.location.reload();
+                            this.noti.success('¡Cambios guardados exitosamente!', undefined, 5000);},
                 error: () => { this.noti.error('¡No se pudo actualizar el usuario!', undefined, 5000);
                                 this.error.set('No se pudo actualizar el usuario') },
                 complete: () => { this.saving.set(false) },
