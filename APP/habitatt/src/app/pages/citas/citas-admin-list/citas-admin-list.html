@@ -22,8 +22,8 @@
         }</mat-select>
     </mat-form-field>
     <div class="precio-range-div">
-        <div><span matPrefix>Inicio: ₡&nbsp;</span><input type="date" [(ngModel)]="fecha1" aria-label="Fecha inicio"></div>
-        <div><span matPrefix>Final :  ₡&nbsp;</span><input type="date" [(ngModel)]="fecha2" aria-label="Fecha final"></div>
+        <div><span matPrefix>Inicio: &nbsp;</span><input type="date" [(ngModel)]="fecha1" aria-label="Fecha inicio"></div>
+        <div><span matPrefix>Final : &nbsp;</span><input type="date" [(ngModel)]="fecha2" aria-label="Fecha final"></div>
     </div>
 </section>
 
@@ -45,6 +45,12 @@
 <div class="result-summary">  {{total()}} citas encontradas: </div>
     <div class="table-wrapper">
         <table mat-table [dataSource]="Filtrados()" class="admin-table">
+            <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>N. Cita</th>
+            <td mat-cell *matCellDef="let cita">
+                <strong>{{ cita.id }}</strong>
+            </td>
+            </ng-container>
             <ng-container matColumnDef="cliente">
             <th mat-header-cell *matHeaderCellDef>Cliente</th>
             <td mat-cell *matCellDef="let cita">
@@ -70,7 +76,7 @@
             <ng-container matColumnDef="estado">
             <th mat-header-cell *matHeaderCellDef>Estado</th>
             <td mat-cell *matCellDef="let cita">
-                <small>{{ cita.status }}</small>
+                <small>{{ obtenerLabelEstado(cita.status) }}</small>
             </td></ng-container>
             <ng-container matColumnDef="acciones">
             <th mat-header-cell *matHeaderCellDef>Acciones</th>

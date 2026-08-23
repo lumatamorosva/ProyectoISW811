@@ -12,7 +12,7 @@ import { Role } from '../../../core/models/role.model'
 })
 export class MainLayout {
   readonly publicMenu: MenuItem[] =[
-    { label: 'Servicios', path: '/servicios', icon: 'square_foot' },
+    { label: 'Servicios', path: '/servicios', icon: 'square_foot', excludeRoles: [Role.ADMIN] },
     { label: 'Citas', path: '/citas', icon: 'receipt_long', roles: [Role.USER] },
     { label: 'Citas', path: '/citasProfesional', icon: 'receipt_long', roles: [Role.PROFESIONAL] },
   ];

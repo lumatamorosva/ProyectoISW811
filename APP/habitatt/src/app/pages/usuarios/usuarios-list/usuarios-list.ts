@@ -75,7 +75,7 @@ export class UsuariosList {
   }
   usuariosFiltrados = computed(()=>{
     const text = this.search().trim().toLowerCase();
-    const selectedRol = this.rolId() == "Cliente" ? "USER" : this.rolId() == "Administrador" ? "ADMIN" : null;
+    const selectedRol = this.rolId() === "Cliente" ? "USER" : this.rolId() === "Administrador" ? "ADMIN" : this.rolId() === "Profesional" ? "PROFESIONAL" : null;
     return this.usuarios().filter((user) => {
       const nombre = user.nombre?.toLocaleLowerCase() ?? '';
       const apellido = user.apellido?.toLowerCase() ?? '';

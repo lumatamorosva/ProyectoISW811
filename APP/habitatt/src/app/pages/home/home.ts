@@ -28,7 +28,7 @@ export class Home {
       description: 'Catálogo ofrecido.',
       icon: 'construction',
       link: '/servicios',
-      roles: [Role.PROFESIONAL, Role.USER, Role.ADMIN],
+      roles: [Role.PROFESIONAL, Role.USER],
     },
     {
       title: 'Citas',

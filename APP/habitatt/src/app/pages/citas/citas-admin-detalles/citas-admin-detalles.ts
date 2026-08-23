@@ -18,6 +18,9 @@ import { Servicio } from '../../../../core/models/servicio.model';
 import { Modality } from '../../../../core/models/modality.model';
 import { profesional } from '../../../../core/models/profesional.model';
 import { Estado } from '../../../../core/models/estado.model';
+import { HistorialService } from '../../../../core/services/historial.service';
+import { MatListModule } from '@angular/material/list';
+import { Historial } from '../../../../core/models/historial.model';
 
 
 @Component({
@@ -29,6 +32,7 @@ import { Estado } from '../../../../core/models/estado.model';
     MatChipsModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    MatListModule,
     CommonModule],
   templateUrl: './citas-admin-detalles.html',
   styleUrl: './citas-admin-detalles.css',
@@ -41,10 +45,15 @@ export class CitasAdminDetalles {
     private readonly modService = inject(ModalityService);
     private readonly profService = inject(ProfesionalService);
     private readonly statusService = inject(StatusService);
+    private readonly historialService = inject(HistorialService);
 
   cita = signal<Cita | null>(null);
   loading = signal(false);
   error = signal<string | null>(null);
+
+  historial = signal<Historial[]>([]);
+  estados = signal<Estado[] | null>(null);
+  nombresUsuariosMap = signal<Record<number, string>>({});
 
   usuario = signal<usuario[] | null> (null);
   servicio = signal<Servicio | null>(null);
@@ -60,11 +69,13 @@ export class CitasAdminDetalles {
 ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.loadCita(id);
+    this.cargarHistorial(id);
   }
 
   loadCita(id: number): void {
     this.loading.set(true);
     this.error.set(null);
+    this.cargarEstados();
     this.citaService.obtenerPorId(id).subscribe({
       next: (response) => {
         this.cita.set(response.data);
@@ -81,6 +92,35 @@ ngOnInit(): void {
       },
     });
   }
+
+  private cargarHistorial(citaId: number): void {
+    this.historialService.getByCita(citaId).subscribe({
+      next: (response) => {
+      const lista: Historial[] = response.data || [];
+      this.historial.set(lista);
+      lista.forEach((item) => {  if (item.usuarioId) { this.obtenerNombreUsuarioHistorial(item.usuarioId); }
+      });
+    },
+      error: (err) => console.error('Error al cargar historial', err)
+    });
+  }
+  private obtenerNombreUsuarioHistorial(id: number): void {
+    if (this.nombresUsuariosMap()[id]) return;
+    this.usuarioService.obtenerPorId(id).subscribe({
+      next: (response) => {
+        const nombreCompleto = `${response.data.nombre} ${response.data.apellido}`;
+        this.nombresUsuariosMap.update(map => ({ ...map, [id]: nombreCompleto }));
+      },
+      error: () => {
+        this.nombresUsuariosMap.update(map => ({ ...map, [id]: 'Usuario no encontrado' }));
+      }
+    });
+  }
+  getNombreUsuario(usuarioId: number | null): string {
+    if (!usuarioId) return 'Sistema (Sin Identificación)';
+    return this.nombresUsuariosMap()[usuarioId] || 'Cargando usuario...';
+  }
+
   private cargarNombreProfesional(id: number): void{
     this.profService.obtenerPorId(id).subscribe({
       next: (response) => {
@@ -105,6 +145,12 @@ ngOnInit(): void {
       }
     })
   }
+
+  private cargarEstados(): void {
+    this.statusService.listar().subscribe({
+    next: (response) => { this.estados.set(response.data || []); }
+  });
+}
   private cargarNombreModality(id: string): void{
     this.modService.listar().subscribe({
       next: (response) => {
@@ -116,5 +162,9 @@ ngOnInit(): void {
           }
         }
     })
+  }
+  obtenerLabelEstado(statusKey: string): string {
+    const estadoEncontrado = this.estados()?.find(e => e.value === statusKey);
+    return estadoEncontrado ? estadoEncontrado.label : statusKey;
   }
 }

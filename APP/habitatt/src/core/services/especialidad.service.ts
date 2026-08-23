@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { ApiPaginatedResponse, ApiResponse } from '../models/api-response.model';
-import { Especialidad } from '../models/especialidad.model';
+import { Especialidad, EspecialidadUpdateDto } from '../models/especialidad.model';
 
 
 @Injectable({ providedIn: 'root' })
@@ -12,4 +12,7 @@ export class EspecialidadService {
     //localhost:3000/especialidades
     listar() {return this.http.get<ApiPaginatedResponse<Especialidad>>(this.apiUrl);}
     obtenerPorId(id: number) {return this.http.get<ApiResponse<Especialidad>>(`${this.apiUrl}/${id}`);}
+    actualizar(id: number, data: Partial<EspecialidadUpdateDto>) {
+              return this.http.put<ApiResponse<Especialidad>>(`${this.apiUrl}/${id}`, data);
+       }
 }

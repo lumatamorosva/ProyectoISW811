@@ -13,7 +13,8 @@ export interface MenuItem {
   label: string;
   path: string;
   icon: string;
-  roles?: Role[]}
+  roles?: Role[];
+  excludeRoles?: Role[];}
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -55,6 +56,8 @@ export class HeaderComponent {
   readonly mostrarMenuMantenimientos =computed(() =>this.adminMaintenanceMenuVisible().length > 0)
   readonly mostrarMenuGestion =computed(() =>this.adminManagementMenuVisible().length > 0)
   puedeMostrar(item: MenuItem): boolean {
+    const rolActual = this.rol();
+    if (item.excludeRoles?.length && rolActual && item.excludeRoles.includes(rolActual as Role)) { return false; }
     if (!item.roles?.length) {return true}
     return this.authService.tieneRol(item.roles)
   }

@@ -62,7 +62,7 @@ export class CitasAdminList {
   //Error
   error = signal<string | null>(null);
 
-  displayedColumns = [ 'cliente', 'fecha', 'hora', 'profesional', 'estado', 'acciones', ];
+  displayedColumns = [ 'id', 'cliente', 'fecha', 'hora', 'profesional', 'estado', 'acciones', ];
 
   ngOnInit(): void {
   this.cargarTodoElSistema();
@@ -145,5 +145,10 @@ cargarTodoElSistema(): void {
       }
     ));
     this.excelService.generateExcelReport(datos, 'ReporteCitas');
+  }
+
+  obtenerLabelEstado(statusKey: string): string {
+    const estadoEncontrado = this.estados()?.find(e => e.value === statusKey);
+    return estadoEncontrado ? estadoEncontrado.label : statusKey;
   }
 }

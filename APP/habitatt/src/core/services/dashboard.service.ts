@@ -37,8 +37,7 @@ export class CitasReportService {
       confirmadas: citas.filter(c => c.status === 'CONFIRMED').length,
       completadas: citas.filter(c => c.status === 'COMPLETED').length,
       canceladas: citas.filter(c => c.status === 'CANCELLED').length,
-      ingresosTotales: citas
-        .filter(c => c.status === 'COMPLETED')
+      ingresosTotales: citas.filter(c => c.status === 'COMPLETED')
         .reduce((sum, c) => sum + Number(c.cobro || 0), 0)
     };
 

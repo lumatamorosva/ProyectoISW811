@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
-import { Especialidad} from '../../../../core/models/especialidad.model';
+import { Especialidad, EspecialidadUpdateDto} from '../../../../core/models/especialidad.model';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -81,4 +81,17 @@ export class EspecialidadesAdminList {
   })
 
   total = computed(() => this.Filtrados().length);
+
+  cambiarEstado(especialidad: Especialidad): void {
+      const nuevoEstado = !especialidad.isActive;
+      const datosActualizados: Partial<EspecialidadUpdateDto> = {
+        isActive: nuevoEstado
+      };
+      this.SpService.actualizar(especialidad.id, datosActualizados)
+        .subscribe({
+          next: () => {especialidad.isActive = nuevoEstado;
+            this.specs.update(lista => lista.map(s => s.id === especialidad.id ? {...s, isActive: nuevoEstado}: s));
+          }
+        });
+      }
 }
