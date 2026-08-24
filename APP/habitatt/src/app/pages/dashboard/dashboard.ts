@@ -6,6 +6,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData } from 'chart.js';
 
+import { StatusService } from '../../../core/services/estado.service';
+import { Estado } from '../../../core/models/estado.model';
 import { CitasReportService } from '../../../core/services/dashboard.service';
 import { CitasKpis } from '../../../core/models/dashboard.model';
 
@@ -21,7 +23,9 @@ import { CitasKpis } from '../../../core/models/dashboard.model';
   styleUrl: './dashboard.css',
 })
 export class Dashboard {
+  private readonly statusService = inject(StatusService);
   private readonly reportService = inject(CitasReportService);
+  estados = signal<Estado[] | null>(null);
   loading = signal<boolean>(true);
   kpis = signal<CitasKpis | null>(null);
   //Líneas (Tendencia Mensual de Citas e Ingresos)
@@ -35,8 +39,15 @@ export class Dashboard {
   barChartData = signal<ChartData<'bar'>>({ labels: [], datasets: [] });
 
   ngOnInit(): void {
+    this.cargarEstados();
     this.cargarDatos();
   }
+
+  private cargarEstados(): void {
+    this.statusService.listar().subscribe({
+    next: (response) => { this.estados.set(response.data || []); }
+  });
+}
 
   cargarDatos(): void {
     this.loading.set(true);
@@ -69,7 +80,7 @@ export class Dashboard {
           labels: reporte.distribucionEstado.labels,
           datasets: [{
             data: reporte.distribucionEstado.cantidades,
-            backgroundColor: ['#c99e6e', '#85c6c9', '#4caf50', '#f44336']
+            backgroundColor: ['#c99e6e', '#85c6c9', '#4caf50', '#f44336','#6668f8' ]
           }]
         });
         //Barras
@@ -84,5 +95,9 @@ export class Dashboard {
       },
       complete: () => this.loading.set(false)
     });
+  }
+  obtenerLabelEstado(statusKey: string): string {
+    const estadoEncontrado = this.estados()?.find(e => e.value === statusKey);
+    return estadoEncontrado ? estadoEncontrado.label : statusKey;
   }
 }
